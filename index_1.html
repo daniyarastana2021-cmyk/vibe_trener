@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Вайбкодинг — Samruk Business Academy</title>
+<style>
+  :root {
+    --blue: #1a56db;
+    --blue-light: #e8f0fe;
+    --blue-mid: #3b82f6;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --purple: #7c3aed;
+    --purple-light: #f3e8ff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-500: #6b7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --radius: 12px;
+    --shadow: 0 2px 8px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  }
+  [data-theme="dark"] {
+    --gray-50: #111827; --gray-100: #1f2937; --gray-200: #374151;
+    --gray-500: #9ca3af; --gray-700: #d1d5db; --gray-900: #f9fafb;
+    --blue-light: #1e3a5f; --green-light: #14532d; --orange-light: #431407; --purple-light: #3b0764;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--gray-50); color: var(--gray-900); line-height: 1.6; transition: background .3s, color .3s; }
+
+  /* NAV */
+  nav { background: white; border-bottom: 1px solid var(--gray-200); position: sticky; top: 0; z-index: 100; }
+  [data-theme="dark"] nav { background: #1f2937; }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--blue); text-decoration: none; }
+  .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-links a { color: var(--gray-700); text-decoration: none; font-size: .85rem; padding: 6px 10px; border-radius: 8px; transition: background .2s; }
+  .nav-links a:hover { background: var(--blue-light); color: var(--blue); }
+  .nav-right { display: flex; gap: 8px; align-items: center; }
+  #searchInput { border: 1px solid var(--gray-200); border-radius: 20px; padding: 6px 14px; font-size: .85rem; outline: none; width: 180px; background: var(--gray-100); color: var(--gray-900); }
+  #searchInput:focus { border-color: var(--blue); }
+  .btn-theme { background: none; border: 1px solid var(--gray-200); border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 1rem; }
+  #searchResults { position: absolute; top: 60px; left: 0; right: 0; background: white; border-bottom: 2px solid var(--blue); padding: 12px 20px; display: none; }
+  [data-theme="dark"] #searchResults { background: #1f2937; }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; font-size: 1.4rem; color: var(--gray-700); }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #1a56db 0%, #3b82f6 50%, #7c3aed 100%); color: white; padding: 80px 20px; text-align: center; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+  .hero p { font-size: 1.15rem; opacity: .9; max-width: 600px; margin: 0 auto 32px; }
+  .btn-primary { background: white; color: var(--blue); padding: 14px 32px; border-radius: 50px; font-weight: 700; font-size: 1rem; text-decoration: none; display: inline-block; transition: transform .2s, box-shadow .2s; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+  .hero-badges { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.4); border-radius: 20px; padding: 6px 14px; font-size: .85rem; }
+
+  /* SECTIONS */
+  section { padding: 60px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-title { font-size: 1.8rem; font-weight: 700; text-align: center; margin-bottom: 8px; }
+  .section-sub { text-align: center; color: var(--gray-500); margin-bottom: 40px; font-size: 1rem; }
+  .alt-bg { background: var(--gray-100); }
+
+  /* CARDS GRID */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s; }
+  [data-theme="dark"] .card { background: #1f2937; }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .card-icon { font-size: 2rem; margin-bottom: 12px; }
+  .card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: .9rem; color: var(--gray-500); line-height: 1.5; }
+  .card-tag { display: inline-block; font-size: .75rem; padding: 3px 10px; border-radius: 10px; margin-top: 12px; font-weight: 600; }
+
+  /* NAV CARDS (sections overview) */
+  .nav-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  .nav-card { background: white; border-radius: var(--radius); padding: 20px; text-align: center; text-decoration: none; color: var(--gray-900); box-shadow: var(--shadow); transition: all .2s; border: 2px solid transparent; }
+  [data-theme="dark"] .nav-card { background: #1f2937; color: var(--gray-900); }
+  .nav-card:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+  .nav-card span { font-size: 2rem; display: block; margin-bottom: 8px; }
+  .nav-card strong { font-size: .9rem; display: block; }
+
+  /* TABS */
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .tab { padding: 8px 18px; border-radius: 20px; border: 2px solid var(--gray-200); background: none; cursor: pointer; font-size: .9rem; color: var(--gray-700); transition: all .2s; }
+  .tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* PROMPT CONSTRUCTOR */
+  .prompt-form { background: white; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+  [data-theme="dark"] .prompt-form { background: #1f2937; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; border: 1.5px solid var(--gray-200); border-radius: 8px; padding: 10px 14px;
+    font-size: .9rem; outline: none; transition: border .2s; background: var(--gray-50); color: var(--gray-900);
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue); }
+  .result-box { background: var(--blue-light); border-left: 4px solid var(--blue); border-radius: 8px; padding: 16px; margin-top: 16px; font-size: .9rem; line-height: 1.7; position: relative; white-space: pre-wrap; }
+  .copy-btn { background: var(--blue); color: white; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer; font-size: .85rem; margin-top: 10px; transition: background .2s; }
+  .copy-btn:hover { background: #1440b0; }
+  .btn-generate { background: var(--blue); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: background .2s; }
+  .btn-generate:hover { background: #1440b0; }
+
+  /* ACCORDION */
+  .accordion-item { border-bottom: 1px solid var(--gray-200); }
+  .accordion-btn { width: 100%; text-align: left; background: none; border: none; padding: 16px 0; font-size: .95rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--gray-900); }
+  .accordion-btn:hover { color: var(--blue); }
+  .accordion-content { display: none; padding: 0 0 16px; font-size: .9rem; color: var(--gray-700); line-height: 1.7; }
+  .accordion-content.open { display: block; }
+  .accordion-arrow { transition: transform .2s; font-size: .8rem; }
+  .accordion-btn.open .accordion-arrow { transform: rotate(180deg); }
+
+  /* PROMPT LIBRARY */
+  .prompt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .prompt-card { background: white; border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); }
+  [data-theme="dark"] .prompt-card { background: #1f2937; }
+  .prompt-card .cat { font-size: .75rem; font-weight: 700; text-transform: uppercase; color: var(--blue); margin-bottom: 6px; }
+  .prompt-card h4 { font-size: .95rem; margin-bottom: 8px; }
+  .prompt-card .text { font-size: .85rem; color: var(--gray-500); background: var(--gray-100); padding: 10px; border-radius: 6px; cursor: pointer; transition: background .2s; }
+  .prompt-card .text:hover { background: var(--blue-light); }
+
+  /* TOOLS TABLE */
+  .tools-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  .tools-table th { background: var(--blue); color: white; padding: 12px; text-align: left; }
+  .tools-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-200); }
+  .tools-table tr:hover td { background: var(--blue-light); }
+  .tools-table .tag { padding: 2px 8px; border-radius: 10px; font-size: .75rem; font-weight: 600; }
+  .free { background: var(--green-light); color: var(--green); }
+  .paid { background: var(--orange-light); color: var(--orange); }
+  .freemium { background: var(--purple-light); color: var(--purple); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 20px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num { background: var(--blue); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; font-size: .9rem; }
+  .step-body h4 { font-weight: 700; margin-bottom: 4px; }
+  .step-body p { font-size: .9rem; color: var(--gray-500); }
+
+  /* GROW */
+  .grow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .grow-card { border-radius: var(--radius); padding: 24px; }
+  .grow-g { background: #dbeafe; border-left: 5px solid var(--blue); }
+  .grow-r { background: var(--orange-light); border-left: 5px solid var(--orange); }
+  .grow-o { background: var(--green-light); border-left: 5px solid var(--green); }
+  .grow-w { background: var(--purple-light); border-left: 5px solid var(--purple); }
+  .grow-card .letter { font-size: 2.5rem; font-weight: 900; opacity: .3; }
+  .grow-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+  .grow-card p { font-size: .9rem; line-height: 1.6; }
+  .grow-card ul { font-size: .85rem; margin-top: 8px; padding-left: 16px; }
+
+  /* BEFORE/AFTER */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .before { background: #fee2e2; border-radius: var(--radius); padding: 16px; }
+  .after { background: var(--green-light); border-radius: var(--radius); padding: 16px; }
+  .compare-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; opacity: .7; }
+  .compare p { font-size: .9rem; }
+
+  /* ROLES */
+  .roles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .role-card { background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+  [data-theme="dark"] .role-card { background: #1f2937; }
+  .role-card .emoji { font-size: 2rem; margin-bottom: 8px; }
+  .role-card h4 { font-weight: 700; margin-bottom: 6px; }
+  .role-card .example { font-size: .8rem; color: var(--gray-500); background: var(--gray-100); padding: 8px; border-radius: 6px; margin-top: 8px; font-style: italic; }
+
+  /* LIFEHACKS */
+  .lifehacks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .lh-card { background: white; border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); border-left: 4px solid var(--green); }
+  [data-theme="dark"] .lh-card { background: #1f2937; }
+  .err-card { border-left-color: var(--orange); }
+  .lh-num { font-size: .75rem; font-weight: 700; color: var(--green); margin-bottom: 4px; }
+  .err-card .lh-num { color: var(--orange); }
+  .lh-card h4 { font-size: .95rem; font-weight: 700; margin-bottom: 4px; }
+  .lh-card p { font-size: .85rem; color: var(--gray-500); }
+
+  /* BACK TO TOP */
+  #toTop { position: fixed; bottom: 24px; right: 24px; background: var(--blue); color: white; border: none; border-radius: 50%; width: 44px; height: 44px; font-size: 1.2rem; cursor: pointer; display: none; box-shadow: var(--shadow-lg); transition: transform .2s; z-index: 200; }
+  #toTop:hover { transform: translateY(-3px); }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 80px; right: 24px; background: var(--green); color: white; padding: 10px 20px; border-radius: 8px; font-size: .9rem; display: none; z-index: 300; }
+
+  /* FOOTER */
+  footer { background: var(--gray-900); color: #9ca3af; text-align: center; padding: 30px 20px; font-size: .85rem; }
+  [data-theme="dark"] footer { background: #030712; }
+
+  /* BREADCRUMBS */
+  .breadcrumbs { font-size: .8rem; color: var(--gray-500); padding: 10px 20px; max-width: 1100px; margin: 0 auto; }
+  .breadcrumbs a { color: var(--blue); text-decoration: none; }
+
+  /* FORMULA */
+  .formula { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 24px; }
+  [data-theme="dark"] .formula { background: #1f2937; }
+  .formula-item { background: var(--blue); color: white; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: .9rem; }
+  .formula-plus { font-size: 1.2rem; color: var(--gray-500); }
+  .formula-eq { font-size: 1.2rem; font-weight: 700; color: var(--blue); }
+
+  /* IMPROVE PROMPT */
+  .improve-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media(max-width: 640px) { .improve-wrap { grid-template-columns: 1fr; } .compare { grid-template-columns: 1fr; } }
+
+  /* MOBILE */
+  @media(max-width: 768px) {
+    .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; right: 0; background: white; padding: 12px; border-bottom: 1px solid var(--gray-200); }
+    [data-theme="dark"] .nav-links { background: #1f2937; }
+    .nav-links.open { display: flex; }
+    .hamburger { display: block; }
+    #searchInput { width: 130px; }
+    .hero { padding: 50px 20px; }
+    .tools-table { display: block; overflow-x: auto; }
+    .improve-wrap { grid-template-columns: 1fr; }
+  }
+
+  /* highlight search */
+  mark { background: yellow; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">🚀 SBA Вайбкодинг</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#what">Что это?</a>
+      <a href="#ai-employee">ИИ-сотрудник</a>
+      <a href="#instructions">Инструкции</a>
+      <a href="#tools">Инструменты</a>
+      <a href="#lifehacks">Лайфхаки</a>
+      <a href="#grow">GROW</a>
+      <a href="#prompts">Промпты</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <input type="text" id="searchInput" placeholder="🔍 Поиск..." oninput="doSearch(this.value)">
+      <button class="btn-theme" onclick="toggleTheme()" title="Тема">🌙</button>
+      <button class="hamburger" onclick="toggleMenu()" id="hamburger">☰</button>
+    </div>
+  </div>
+  <div id="searchResults"></div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <h1>Вайбкодинг для сотрудников<br>Samruk Business Academy</h1>
+  <p>Научитесь использовать искусственный интеллект как личного помощника для работы, проектов и создания цифровых продуктов</p>
+  <a href="#what" class="btn-primary">🎯 Начать обучение</a>
+  <div class="hero-badges">
+    <span class="badge">⏱ 15 минут до первого результата</span>
+    <span class="badge">✅ Без навыков программирования</span>
+    <span class="badge">🇰🇿 На русском языке</span>
+    <span class="badge">🆓 Бесплатно</span>
+  </div>
+</section>
+
+<!-- QUICK NAV -->
+<section style="padding: 40px 20px;">
+  <div class="container">
+    <h2 class="section-title">Разделы портала</h2>
+    <p class="section-sub">Выберите тему, с которой хотите начать</p>
+    <div class="nav-cards">
+      <a href="#what" class="nav-card"><span>💡</span><strong>Что такое вайбкодинг</strong></a>
+      <a href="#ai-employee" class="nav-card"><span>🤖</span><strong>Личный ИИ-сотрудник</strong></a>
+      <a href="#instructions" class="nav-card"><span>📋</span><strong>Пошаговые инструкции</strong></a>
+      <a href="#tools" class="nav-card"><span>🛠️</span><strong>Инструменты</strong></a>
+      <a href="#lifehacks" class="nav-card"><span>✨</span><strong>Лайфхаки</strong></a>
+      <a href="#grow" class="nav-card"><span>🌱</span><strong>Модель GROW</strong></a>
+      <a href="#prompts" class="nav-card"><span>🧩</span><strong>Конструктор промптов</strong></a>
+      <a href="#faq" class="nav-card"><span>❓</span><strong>Вопросы и ответы</strong></a>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS VIBECODING -->
+<section id="what" class="alt-bg">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Что такое вайбкодинг</div>
+    <h2 class="section-title">💡 Что такое вайбкодинг?</h2>
+    <p class="section-sub">Простое объяснение без технических терминов</p>
+
+    <div class="cards" style="margin-bottom:40px">
+      <div class="card">
+        <div class="card-icon">🗣️</div>
+        <h3>Простыми словами</h3>
+        <p>Вайбкодинг — это когда вы <strong>говорите ИИ, что хотите получить</strong>, а он создаёт это за вас. Как объяснить задачу опытному коллеге — и он всё сделает сам.</p>
+        <span class="card-tag" style="background:var(--blue-light);color:var(--blue)">Главная идея</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>Чем отличается от программирования?</h3>
+        <p>Программирование — это писать код вручную. Вайбкодинг — это <strong>описывать задачу на обычном языке</strong>, а ИИ пишет код за вас. Вам нужны только слова!</p>
+        <span class="card-tag" style="background:var(--green-light);color:var(--green)">Без кода</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Почему это важно для вас?</h3>
+        <p>Вы можете создавать <strong>сайты, таблицы, автоматизации, презентации, отчёты</strong> — всё то, что раньше требовало программиста. Теперь это в ваших руках.</p>
+        <span class="card-tag" style="background:var(--orange-light);color:var(--orange)">Ваши возможности</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.3rem; margin-bottom:20px; text-align:center">📊 Примеры: до и после ИИ</h3>
+    <div class="compare">
+      <div class="before">
+        <div class="compare-label">❌ До ИИ</div>
+        <p>HR-менеджер тратит 2 часа на составление должностной инструкции вручную, перебирая старые шаблоны.</p>
+      </div>
+      <div class="after">
+        <div class="compare-label">✅ После ИИ</div>
+        <p>Пишет ИИ: «Составь должностную инструкцию для методиста в корпоративном университете» — получает готовый документ за 30 секунд.</p>
+      </div>
+    </div>
+    <div class="compare">
+      <div class="before">
+        <div class="compare-label">❌ До ИИ</div>
+        <p>Менеджер проекта вручную составляет план на 3 страницы, согласует с командой 3 дня.</p>
+      </div>
+      <div class="after">
+        <div class="compare-label">✅ После ИИ</div>
+        <p>Описывает проект ИИ → получает структурированный план с этапами, сроками и рисками за 2 минуты.</p>
+      </div>
+    </div>
+    <div class="compare">
+      <div class="before">
+        <div class="compare-label">❌ До ИИ</div>
+        <p>Бизнес-тренер проводит часы за поиском материалов для новой программы обучения.</p>
+      </div>
+      <div class="after">
+        <div class="compare-label">✅ После ИИ</div>
+        <p>Запрашивает у ИИ программу тренинга по управлению изменениями — получает полный сценарий с упражнениями.</p>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.3rem; margin:30px 0 20px; text-align:center">🚀 Быстрый старт за 15 минут</h3>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Зайдите на claude.ai или chatgpt.com</h4><p>Зарегистрируйтесь бесплатно — это занимает 2 минуты.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Напишите свой первый запрос</h4><p>Например: «Ты — опытный HR-консультант. Составь шаблон welcome-письма для нового сотрудника Samruk Business Academy.»</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Изучите результат</h4><p>Прочитайте ответ. Если что-то не устраивает — уточните: «Сделай более официальным» или «Добавь пункт про дресс-код».</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Скопируйте и используйте</h4><p>Результат готов. Используйте его в работе, дорабатывайте по своему усмотрению.</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Практикуйтесь каждый день</h4><p>Чем больше практики — тем лучше ваши запросы и тем точнее результаты.</p></div></div>
+    </div>
+
+    <h3 style="font-size:1.3rem; margin:40px 0 20px; text-align:center">🎯 Что можно автоматизировать?</h3>
+    <div class="cards">
+      <div class="card"><div class="card-icon">📝</div><h3>Документы</h3><p>Договоры, инструкции, приказы, регламенты, шаблоны — всё создаётся за минуты.</p></div>
+      <div class="card"><div class="card-icon">📊</div><h3>Аналитика</h3><p>Анализ данных, сводные таблицы, интерпретация результатов, графики.</p></div>
+      <div class="card"><div class="card-icon">📧</div><h3>Коммуникации</h3><p>Деловые письма, ответы на запросы, коммерческие предложения, пресс-релизы.</p></div>
+      <div class="card"><div class="card-icon">🎓</div><h3>Обучение</h3><p>Программы тренингов, тесты, кейсы, учебные материалы, сценарии воркшопов.</p></div>
+      <div class="card"><div class="card-icon">🗂️</div><h3>Проекты</h3><p>Планы, дорожные карты, риски, протоколы встреч, отчёты о статусе.</p></div>
+      <div class="card"><div class="card-icon">🔍</div><h3>Исследования</h3><p>Сбор информации, сравнение вариантов, обзор лучших практик, рекомендации.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI EMPLOYEE -->
+<section id="ai-employee">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Личный ИИ-сотрудник</div>
+    <h2 class="section-title">🤖 Личный ИИ-сотрудник</h2>
+    <p class="section-sub">ИИ может выполнять роль любого специалиста — стоит только попросить</p>
+    
+    <div class="card" style="margin-bottom:30px; background: linear-gradient(135deg,#1a56db,#3b82f6); color:white;">
+      <p style="font-size:1.1rem; line-height:1.7">Представьте, что у вас есть личный помощник, который <strong>мгновенно становится любым специалистом</strong> — стоит только написать «Ты — [роль]». Он знает всё, работает 24/7, никогда не устаёт и всегда готов помочь.</p>
+    </div>
+
+    <div class="roles-grid">
+      <div class="role-card"><div class="emoji">📊</div><h4>Аналитик</h4><p>Анализирует данные, строит выводы, создаёт отчёты</p><div class="example">«Ты — аналитик данных. Проанализируй результаты опроса сотрудников и выдели ключевые проблемы.»</div></div>
+      <div class="role-card"><div class="emoji">🎓</div><h4>Бизнес-тренер</h4><p>Разрабатывает программы обучения, кейсы, упражнения</p><div class="example">«Ты — бизнес-тренер с 15-летним опытом. Создай программу однодневного тренинга по коммуникациям.»</div></div>
+      <div class="role-card"><div class="emoji">📚</div><h4>Методист</h4><p>Создаёт учебные материалы, структурирует контент</p><div class="example">«Ты — методист корпоративного университета. Разработай структуру онлайн-курса по Excel для менеджеров.»</div></div>
+      <div class="role-card"><div class="emoji">👥</div><h4>HR-консультант</h4><p>Помогает с кадровыми вопросами, политиками, процедурами</p><div class="example">«Ты — HR-директор. Составь положение о системе мотивации для сотрудников учебного центра.»</div></div>
+      <div class="role-card"><div class="emoji">📣</div><h4>Маркетолог</h4><p>Разрабатывает контент, кампании, тексты для продвижения</p><div class="example">«Ты — маркетолог образовательных продуктов. Напиши продающее описание нашего курса по лидерству.»</div></div>
+      <div class="role-card"><div class="emoji">📋</div><h4>Проектный менеджер</h4><p>Планирует проекты, управляет рисками, создаёт дорожные карты</p><div class="example">«Ты — PM. Создай детальный план запуска новой программы обучения на 3 месяца.»</div></div>
+      <div class="role-card"><div class="emoji">🏢</div><h4>Помощник руководителя</h4><p>Готовит материалы для совещаний, письма, презентации</p><div class="example">«Ты — помощник директора. Подготовь повестку и материалы для еженедельного совещания команды.»</div></div>
+      <div class="role-card"><div class="emoji">⚖️</div><h4>Юрист</h4><p>Объясняет законодательство, составляет договоры, анализирует риски</p><div class="example">«Ты — корпоративный юрист. Объясни простыми словами требования трудового кодекса к договорам ГПХ.»</div></div>
+      <div class="role-card"><div class="emoji">💻</div><h4>ИТ-консультант</h4><p>Помогает с технологиями, выбором ПО, автоматизацией</p><div class="example">«Ты — ИТ-консультант. Порекомендуй инструменты для автоматизации HR-процессов в компании 200 человек.»</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTIONS -->
+<section id="instructions" class="alt-bg">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Пошаговые инструкции</div>
+    <h2 class="section-title">📋 Пошаговые инструкции</h2>
+    <p class="section-sub">Всё что нужно знать для работы с ИИ</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('prompts-guide')">✍️ Как писать промпты</button>
+      <button class="tab" onclick="showTab('prd-guide')">📄 Что такое PRD.md</button>
+      <button class="tab" onclick="showTab('github-guide')">🐙 GitHub для новичков</button>
+      <button class="tab" onclick="showTab('deploy-guide')">🚀 Публикация проекта</button>
+    </div>
+
+    <div id="prompts-guide" class="tab-content active">
+      <h3 style="font-size:1.3rem; margin-bottom:20px">✍️ Как написать хороший промпт</h3>
+      
+      <div style="margin-bottom:30px">
+        <h4 style="margin-bottom:16px">Формула идеального промпта:</h4>
+        <div class="formula">
+          <span class="formula-item">🎭 Роль</span>
+          <span class="formula-plus">+</span>
+          <span class="formula-item">🎯 Задача</span>
+          <span class="formula-plus">+</span>
+          <span class="formula-item">📝 Контекст</span>
+          <span class="formula-plus">+</span>
+          <span class="formula-item">🚫 Ограничения</span>
+          <span class="formula-plus">+</span>
+          <span class="formula-item">📋 Формат</span>
+          <span class="formula-eq">= Отличный результат</span>
+        </div>
+      </div>
+
+      <div class="cards" style="margin-bottom:30px">
+        <div class="card"><div class="card-icon">🎭</div><h3>Роль</h3><p>Скажите ИИ, кем он должен быть: «Ты — опытный HR-директор», «Ты — методист с 10-летним стажем».</p></div>
+        <div class="card"><div class="card-icon">🎯</div><h3>Задача</h3><p>Чётко опишите что нужно сделать: «Составь», «Проанализируй», «Объясни», «Напиши».</p></div>
+        <div class="card"><div class="card-icon">📝</div><h3>Контекст</h3><p>Укажите ситуацию: «для компании 300 человек», «на казахстанском рынке», «для новых сотрудников».</p></div>
+        <div class="card"><div class="card-icon">🚫</div><h3>Ограничения</h3><p>Уточните рамки: «не более 1 страницы», «деловой стиль», «без технических терминов».</p></div>
+        <div class="card"><div class="card-icon">📋</div><h3>Формат</h3><p>Скажите как хотите получить: «в виде таблицы», «маркированным списком», «структурированно по разделам».</p></div>
+      </div>
+
+      <h4 style="margin-bottom:16px">📌 20 примеров хороших промптов:</h4>
+      <div class="prompt-grid">
+        <div class="prompt-card"><div class="cat">HR</div><h4>Должностная инструкция</h4><div class="text" onclick="copyText(this)">Ты — опытный HR-менеджер. Составь должностную инструкцию для тренера-методиста корпоративного университета в казахстанской компании. Включи: цель должности, задачи, компетенции, KPI. Формат: структурированный документ А4.</div></div>
+        <div class="prompt-card"><div class="cat">Проекты</div><h4>План проекта</h4><div class="text" onclick="copyText(this)">Ты — опытный проект-менеджер. Создай план запуска онлайн-курса по soft skills для 500 сотрудников компании. Срок: 3 месяца. Включи этапы, сроки, ответственных, риски. Формат: таблица.</div></div>
+        <div class="prompt-card"><div class="cat">Обучение</div><h4>Программа тренинга</h4><div class="text" onclick="copyText(this)">Ты — бизнес-тренер. Разработай программу однодневного тренинга по навыкам презентации для менеджеров среднего звена. Аудитория: 15 человек, опыт работы 3-7 лет. Включи цели, расписание, упражнения.</div></div>
+        <div class="prompt-card"><div class="cat">Аналитика</div><h4>Анализ результатов</h4><div class="text" onclick="copyText(this)">Ты — аналитик данных. Вот результаты опроса сотрудников об удовлетворённости обучением: [данные]. Выяви 3 ключевые проблемы, их причины и рекомендации. Стиль: деловой, конкретный.</div></div>
+        <div class="prompt-card"><div class="cat">Письма</div><h4>Деловое письмо</h4><div class="text" onclick="copyText(this)">Ты — помощник директора. Напиши официальное письмо партнёрам о переносе даты мероприятия с 15 на 22 мая. Причина: технические работы. Тон: вежливый, профессиональный, кратко.</div></div>
+        <div class="prompt-card"><div class="cat">Отчёты</div><h4>Ежемесячный отчёт</h4><div class="text" onclick="copyText(this)">Ты — аналитик. Создай шаблон ежемесячного отчёта для учебного центра. Разделы: обученные сотрудники, программы, результаты, KPI, выводы, планы на следующий месяц.</div></div>
+        <div class="prompt-card"><div class="cat">Презентации</div><h4>Структура презентации</h4><div class="text" onclick="copyText(this)">Ты — консультант по коммуникациям. Создай структуру 20-минутной презентации стратегии развития обучения на 2025 год для совета директоров. Не более 12 слайдов, каждый — 1 ключевая мысль.</div></div>
+        <div class="prompt-card"><div class="cat">Документы</div><h4>Регламент</h4><div class="text" onclick="copyText(this)">Ты — методолог. Напиши регламент проведения внутренних тренингов в компании: от заявки до оценки результатов. Стиль: официальный. Формат: нумерованные шаги с пояснениями.</div></div>
+        <div class="prompt-card"><div class="cat">HR</div><h4>Адаптация</h4><div class="text" onclick="copyText(this)">Ты — HR-бизнес-партнёр. Разработай программу адаптации нового тренера в корпоративном университете на первые 90 дней. Включи задачи по неделям, ключевые встречи, ожидаемые результаты.</div></div>
+        <div class="prompt-card"><div class="cat">Закупки</div><h4>ТЗ на обучение</h4><div class="text" onclick="copyText(this)">Ты — специалист по закупкам обучения. Составь техническое задание для тендера на проведение тренинга по управлению проектами. Объём: 2 дня, 20 участников, бюджет до 500 000 тенге.</div></div>
+        <div class="prompt-card"><div class="cat">Управление</div><h4>Обратная связь</h4><div class="text" onclick="copyText(this)">Ты — опытный руководитель и коуч. Помоги сформулировать конструктивную обратную связь сотруднику, который систематически не сдаёт отчёты вовремя. Тон: поддерживающий, но чёткий.</div></div>
+        <div class="prompt-card"><div class="cat">Маркетинг</div><h4>Анонс мероприятия</h4><div class="text" onclick="copyText(this)">Ты — контент-менеджер. Напиши анонс мастер-класса по навыкам публичных выступлений для корпоративного чата. Дата: 20 мая, 14:00. Формат: коротко, с призывом к действию, живой тон.</div></div>
+        <div class="prompt-card"><div class="cat">Обучение</div><h4>Тест для оценки</h4><div class="text" onclick="copyText(this)">Ты — методист. Создай тест для оценки знаний по теме «Основы проектного управления». 15 вопросов с 4 вариантами ответа. Уровень: базовый. Укажи правильные ответы.</div></div>
+        <div class="prompt-card"><div class="cat">Аналитика</div><h4>Бенчмаркинг</h4><div class="text" onclick="copyText(this)">Ты — аналитик корпоративного обучения. Опиши лучшие практики организации корпоративных университетов в крупных компаниях СНГ. Дай конкретные примеры и рекомендации.</div></div>
+        <div class="prompt-card"><div class="cat">Документы</div><h4>Политика компании</h4><div class="text" onclick="copyText(this)">Ты — юрист и HR. Составь политику компании об использовании ИИ-инструментов сотрудниками. Включи: разрешённые инструменты, правила использования, ограничения, ответственность. Стиль: официальный.</div></div>
+        <div class="prompt-card"><div class="cat">ИТ</div><h4>Выбор LMS</h4><div class="text" onclick="copyText(this)">Ты — ИТ-консультант и эксперт по edtech. Сравни 5 LMS-платформ для корпоративного обучения: Moodle, iSpring, Teachbase, Talent LMS, Docebo. Критерии: цена, функционал, простота, поддержка русского языка.</div></div>
+        <div class="prompt-card"><div class="cat">HR</div><h4>Мотивация персонала</h4><div class="text" onclick="copyText(this)">Ты — HR-директор с экспертизой в мотивации. Предложи 10 нематериальных способов мотивации для сотрудников учебного центра. Для каждого: описание, как внедрить, ожидаемый эффект.</div></div>
+        <div class="prompt-card"><div class="cat">Переговоры</div><h4>Подготовка к встрече</h4><div class="text" onclick="copyText(this)">Ты — бизнес-консультант. Помоги подготовиться к переговорам с руководством о расширении бюджета на обучение. Дай аргументы, возможные возражения и ответы на них.</div></div>
+        <div class="prompt-card"><div class="cat">Обучение</div><h4>Геймификация</h4><div class="text" onclick="copyText(this)">Ты — эксперт по геймификации в обучении. Разработай систему геймификации для онлайн-курса по корпоративной этике. Включи: баллы, бейджи, уровни, рейтинг. Бюджет: минимальный.</div></div>
+        <div class="prompt-card"><div class="cat">Управление</div><h4>Стратегия</h4><div class="text" onclick="copyText(this)">Ты — стратегический консультант. Помоги сформулировать стратегию развития корпоративного университета на 2025-2027 год. Включи: миссию, цели, KPI, инициативы, ресурсы. Формат: краткий стратегический документ.</div></div>
+      </div>
+    </div>
+
+    <div id="prd-guide" class="tab-content">
+      <h3 style="font-size:1.3rem; margin-bottom:20px">📄 Что такое PRD.md?</h3>
+      <div class="card" style="margin-bottom:24px">
+        <p>PRD (Product Requirements Document) — это <strong>документ с описанием продукта или проекта</strong>. Когда вы просите ИИ создать что-то сложное (сайт, приложение, документ), PRD помогает ИИ понять, что именно вы хотите. Это как техническое задание, но написанное простым языком.</p>
+      </div>
+      <h4 style="margin-bottom:16px">Структура PRD:</h4>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Цель проекта</h4><p>Что мы хотим создать и зачем? Одно-два предложения.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Целевая аудитория</h4><p>Кто будет использовать продукт? Опишите пользователей.</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Ключевые функции</h4><p>Что должен уметь продукт? Список по приоритетам.</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Ограничения</h4><p>Бюджет, сроки, технические требования.</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Критерии успеха</h4><p>Как мы поймём, что проект удался?</p></div></div>
+      </div>
+      <div class="result-box" style="margin-top:20px; white-space:pre-wrap; font-family:monospace; font-size:.85rem"># PRD: Портал адаптации новых сотрудников
+
+## Цель
+Создать внутренний сайт для онбординга новых сотрудников SBA.
+
+## Аудитория
+Новые сотрудники в первые 90 дней работы.
+
+## Функции
+1. Чек-лист задач на первый день/неделю/месяц
+2. База знаний о компании и процессах  
+3. Контакты ключевых людей
+4. Программа обучения
+5. FAQ для новичков
+
+## Ограничения
+- Без технической поддержки
+- Обновление вручную 1 раз в квартал
+- Доступ только для сотрудников компании
+
+## Критерии успеха
+- 90% новых сотрудников проходят онбординг через портал
+- Оценка удовлетворённости ≥ 4/5</div>
+      <button class="copy-btn" onclick="copyEl(this.previousElementSibling)">📋 Скопировать шаблон</button>
+    </div>
+
+    <div id="github-guide" class="tab-content">
+      <h3 style="font-size:1.3rem; margin-bottom:20px">🐙 GitHub для новичков</h3>
+      <div class="card" style="margin-bottom:24px; background:var(--blue-light)">
+        <p>GitHub — это <strong>облачное хранилище для проектов</strong>. Думайте о нём как о Google Drive, только специально для файлов проектов. Там вы храните файлы сайта, приложения или любого другого проекта.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><div class="step-body"><h4>Регистрация</h4><p>Зайдите на github.com → нажмите «Sign up» → введите email, пароль, имя пользователя → подтвердите email.</p></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-body"><h4>Создание репозитория</h4><p>Нажмите «+» в правом верхнем углу → «New repository» → введите название → выберите «Public» или «Private» → нажмите «Create repository».</p></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-body"><h4>Загрузка файлов</h4><p>На странице репозитория нажмите «Add file» → «Upload files» → перетащите файлы или выберите их → нажмите «Commit changes».</p></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-body"><h4>Включение GitHub Pages</h4><p>Перейдите в Settings → Pages → Source: выберите «main» ветку → нажмите Save. Через несколько минут ваш сайт будет доступен по ссылке.</p></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-body"><h4>Ваш сайт готов!</h4><p>Ссылка будет вида: yourusername.github.io/your-project. Поделитесь ею с коллегами!</p></div></div>
+      </div>
+    </div>
+
+    <div id="deploy-guide" class="tab-content">
+      <h3 style="font-size:1.3rem; margin-bottom:20px">🚀 Публикация проекта</h3>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🐙</div>
+          <h3>GitHub Pages</h3>
+          <p><strong>Бесплатно</strong> · Идеально для простых сайтов</p>
+          <ul style="font-size:.85rem; color:var(--gray-500); margin-top:10px; padding-left:16px">
+            <li>Загрузите файлы на GitHub</li>
+            <li>Settings → Pages → Save</li>
+            <li>Сайт появится за 5 минут</li>
+          </ul>
+          <span class="card-tag free">Бесплатно</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>Netlify</h3>
+          <p><strong>Проще всего</strong> · Перетащите папку и готово</p>
+          <ul style="font-size:.85rem; color:var(--gray-500); margin-top:10px; padding-left:16px">
+            <li>Зайдите на netlify.com</li>
+            <li>Перетащите папку с проектом</li>
+            <li>Получите ссылку мгновенно</li>
+          </ul>
+          <span class="card-tag free">Бесплатно</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">▲</div>
+          <h3>Vercel</h3>
+          <p><strong>Для продвинутых</strong> · Высокая скорость</p>
+          <ul style="font-size:.85rem; color:var(--gray-500); margin-top:10px; padding-left:16px">
+            <li>Подключите GitHub репозиторий</li>
+            <li>Vercel автоматически опубликует</li>
+            <li>Обновления — push и готово</li>
+          </ul>
+          <span class="card-tag free">Бесплатно</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Инструменты</div>
+    <h2 class="section-title">🛠️ Инструменты вайбкодинга</h2>
+    <p class="section-sub">13 инструментов которые изменят вашу работу</p>
+
+    <div class="cards" style="margin-bottom:40px">
+      <div class="card"><div class="card-icon">🤖</div><h3>ChatGPT</h3><p><strong>Что это:</strong> ИИ-помощник от OpenAI<br><strong>Для чего:</strong> Тексты, анализ, ответы на вопросы, код<br><strong>Когда:</strong> Ежедневные задачи, черновики документов<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Напиши резюме встречи»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">✨</div><h3>Claude</h3><p><strong>Что это:</strong> ИИ-помощник от Anthropic<br><strong>Для чего:</strong> Длинные документы, анализ, написание текстов<br><strong>Когда:</strong> Сложные задачи, работа с большими текстами<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Проанализируй этот договор»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">🐙</div><h3>GitHub</h3><p><strong>Что это:</strong> Хранилище проектов<br><strong>Для чего:</strong> Хранение и публикация сайтов, проектов<br><strong>Когда:</strong> Когда нужно разместить проект онлайн<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: Публикация сайта через Pages</em></p><span class="card-tag free">Бесплатно</span></div>
+      <div class="card"><div class="card-icon">⚡</div><h3>Cursor</h3><p><strong>Что это:</strong> Редактор кода с ИИ<br><strong>Для чего:</strong> Создание сайтов и приложений с ИИ<br><strong>Когда:</strong> Когда нужно создать цифровой продукт<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Создай сайт для нашего курса»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">🏄</div><h3>Windsurf</h3><p><strong>Что это:</strong> ИИ-редактор кода от Codeium<br><strong>Для чего:</strong> Разработка с ИИ-помощником<br><strong>Когда:</strong> Альтернатива Cursor, проще в использовании<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Обнови дизайн сайта»</em></p><span class="card-tag free">Бесплатно</span></div>
+      <div class="card"><div class="card-icon">💖</div><h3>Lovable</h3><p><strong>Что это:</strong> Создание приложений описанием<br><strong>Для чего:</strong> Веб-приложения без кода<br><strong>Когда:</strong> Нужен рабочий прототип быстро<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Создай трекер задач для команды»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">⚡</div><h3>Bolt.new</h3><p><strong>Что это:</strong> Мгновенное создание приложений<br><strong>Для чего:</strong> Быстрые прототипы и MVP<br><strong>Когда:</strong> Нужен результат здесь и сейчас<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Сделай форму регистрации»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">🔄</div><h3>Replit</h3><p><strong>Что это:</strong> Онлайн-среда разработки<br><strong>Для чего:</strong> Создание и запуск приложений в браузере<br><strong>Когда:</strong> Не хотите ничего устанавливать<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Запусти Python скрипт»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">📝</div><h3>Notion AI</h3><p><strong>Что это:</strong> ИИ внутри Notion<br><strong>Для чего:</strong> Написание, редактирование, резюме документов<br><strong>Когда:</strong> Уже используете Notion<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Улучши этот текст»</em></p><span class="card-tag paid">Платно</span></div>
+      <div class="card"><div class="card-icon">🔍</div><h3>Perplexity</h3><p><strong>Что это:</strong> ИИ-поисковик<br><strong>Для чего:</strong> Поиск информации с источниками<br><strong>Когда:</strong> Нужна актуальная информация<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Тренды корпоративного обучения 2025»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">🎨</div><h3>Gamma</h3><p><strong>Что это:</strong> ИИ-создание презентаций<br><strong>Для чего:</strong> Красивые презентации за минуты<br><strong>Когда:</strong> Нужна презентация быстро<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Создай презентацию стратегии»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">🧩</div><h3>Napkin</h3><p><strong>Что это:</strong> Текст → инфографика<br><strong>Для чего:</strong> Превращение текста в визуальные схемы<br><strong>Когда:</strong> Нужно визуализировать идеи<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Визуализируй процесс найма»</em></p><span class="card-tag freemium">Freemium</span></div>
+      <div class="card"><div class="card-icon">🖼️</div><h3>Figma AI</h3><p><strong>Что это:</strong> ИИ в Figma для дизайна<br><strong>Для чего:</strong> Создание прототипов и дизайна<br><strong>Когда:</strong> Нужен дизайн интерфейса или материалов<br><em style="font-size:.8rem; color:var(--gray-500)">Пример: «Создай макет сертификата»</em></p><span class="card-tag freemium">Freemium</span></div>
+    </div>
+
+    <h3 style="font-size:1.2rem; margin-bottom:16px">📊 Таблица сравнения инструментов</h3>
+    <div style="overflow-x:auto">
+      <table class="tools-table">
+        <thead><tr><th>Инструмент</th><th>Задача</th><th>Цена</th><th>Сложность</th><th>Лучше для</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ChatGPT</strong></td><td>Тексты, ответы</td><td class="tag freemium">Freemium</td><td>⭐ Просто</td><td>Ежедневная работа</td></tr>
+          <tr><td><strong>Claude</strong></td><td>Длинные тексты, анализ</td><td class="tag freemium">Freemium</td><td>⭐ Просто</td><td>Документы, анализ</td></tr>
+          <tr><td><strong>Perplexity</strong></td><td>Поиск с источниками</td><td class="tag freemium">Freemium</td><td>⭐ Просто</td><td>Исследование</td></tr>
+          <tr><td><strong>Notion AI</strong></td><td>Заметки и документы</td><td class="tag paid">Платно</td><td>⭐ Просто</td><td>Документооборот</td></tr>
+          <tr><td><strong>Gamma</strong></td><td>Презентации</td><td class="tag freemium">Freemium</td><td>⭐ Просто</td><td>Презентации</td></tr>
+          <tr><td><strong>Napkin</strong></td><td>Инфографика</td><td class="tag freemium">Freemium</td><td>⭐ Просто</td><td>Визуализация</td></tr>
+          <tr><td><strong>Bolt.new</strong></td><td>Быстрые прототипы</td><td class="tag freemium">Freemium</td><td>⭐⭐ Средне</td><td>Прототипы</td></tr>
+          <tr><td><strong>Lovable</strong></td><td>Веб-приложения</td><td class="tag freemium">Freemium</td><td>⭐⭐ Средне</td><td>Приложения без кода</td></tr>
+          <tr><td><strong>Replit</strong></td><td>Запуск кода</td><td class="tag freemium">Freemium</td><td>⭐⭐ Средне</td><td>Онлайн-разработка</td></tr>
+          <tr><td><strong>GitHub</strong></td><td>Хранение, публикация</td><td class="tag free">Бесплатно</td><td>⭐⭐ Средне</td><td>Публикация сайтов</td></tr>
+          <tr><td><strong>Cursor</strong></td><td>Разработка с ИИ</td><td class="tag freemium">Freemium</td><td>⭐⭐⭐ Сложно</td><td>Создание продуктов</td></tr>
+          <tr><td><strong>Windsurf</strong></td><td>Разработка с ИИ</td><td class="tag free">Бесплатно</td><td>⭐⭐⭐ Сложно</td><td>Создание продуктов</td></tr>
+          <tr><td><strong>Figma AI</strong></td><td>Дизайн</td><td class="tag freemium">Freemium</td><td>⭐⭐⭐ Сложно</td><td>Дизайн интерфейсов</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- LIFEHACKS -->
+<section id="lifehacks" class="alt-bg">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Лайфхаки и ошибки</div>
+    <h2 class="section-title">✨ Лайфхаки и ошибки новичков</h2>
+    <p class="section-sub">30 лайфхаков и 30 ошибок которые совершают все</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('lh-tab')">💡 30 Лайфхаков</button>
+      <button class="tab" onclick="showTab('err-tab')">❌ 30 Ошибок</button>
+    </div>
+
+    <div id="lh-tab" class="tab-content active">
+      <div class="lifehacks-grid" id="lifehacksGrid"></div>
+    </div>
+    <div id="err-tab" class="tab-content">
+      <div class="lifehacks-grid" id="errorsGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- GROW -->
+<section id="grow">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Модель GROW</div>
+    <h2 class="section-title">🌱 Модель GROW</h2>
+    <p class="section-sub">Мощный инструмент для постановки целей и работы с ИИ</p>
+
+    <div class="card" style="margin-bottom:30px; background: linear-gradient(135deg,#16a34a,#22c55e); color:white">
+      <p style="font-size:1.05rem; line-height:1.7">GROW — это модель коучинга, которая помогает <strong>структурировать любую задачу или разговор</strong>. Когда вы используете GROW в запросах к ИИ — вы получаете гораздо более точные и полезные ответы.</p>
+    </div>
+
+    <div class="grow-grid">
+      <div class="grow-card grow-g">
+        <div class="letter">G</div>
+        <h3>Goal — Цель</h3>
+        <p>Чего вы хотите достичь? Сформулируйте конкретную, измеримую цель.</p>
+        <ul><li>Что именно нужно получить?</li><li>Как поймёте, что достигли?</li><li>Когда нужен результат?</li></ul>
+      </div>
+      <div class="grow-card grow-r">
+        <div class="letter">R</div>
+        <h3>Reality — Реальность</h3>
+        <p>Какова текущая ситуация? Опишите факты без оценок.</p>
+        <ul><li>Что есть сейчас?</li><li>Что уже пробовали?</li><li>Какие ресурсы доступны?</li></ul>
+      </div>
+      <div class="grow-card grow-o">
+        <div class="letter">O</div>
+        <h3>Options — Варианты</h3>
+        <p>Какие есть возможности и пути решения?</p>
+        <ul><li>Какие варианты есть?</li><li>Что ещё можно попробовать?</li><li>Что сделали бы другие?</li></ul>
+      </div>
+      <div class="grow-card grow-w">
+        <div class="letter">W</div>
+        <h3>Will — Воля/Действие</h3>
+        <p>Что конкретно будете делать? Первый шаг.</p>
+        <ul><li>Что сделаете первым?</li><li>Когда начнёте?</li><li>Что может помешать?</li></ul>
+      </div>
+    </div>
+
+    <h3 style="font-size:1.2rem; margin: 36px 0 16px; text-align:center">💬 GROW-промпт для ИИ — шаблон</h3>
+    <div class="result-box">Ты — опытный коуч и консультант.
+
+**Goal (Цель):** Я хочу [ваша цель]. Успех — когда [критерий].
+
+**Reality (Реальность):** Сейчас ситуация такая: [описание]. Уже пробовал(а): [что пробовали].
+
+**Options (Варианты):** Я думаю о следующих путях: [варианты]. 
+
+**Will (Действие):** Помоги мне выбрать лучший вариант и составить план первых шагов.
+
+Формат ответа: конкретный план действий с приоритетами.</div>
+    <button class="copy-btn" onclick="copyEl(this.previousElementSibling)">📋 Скопировать шаблон GROW</button>
+
+    <h3 style="font-size:1.2rem; margin: 36px 0 16px; text-align:center">📌 Реальные примеры GROW</h3>
+    <div class="cards">
+      <div class="card">
+        <h3 style="color:var(--green)">🎓 Пример: Бизнес-тренер</h3>
+        <p style="font-size:.85rem"><strong>G:</strong> Разработать новый тренинг по лидерству за 2 недели<br><strong>R:</strong> Есть старые материалы, нет времени, аудитория — топ-менеджмент<br><strong>O:</strong> Адаптировать старое / создать с нуля с ИИ / купить готовое<br><strong>W:</strong> Использовать ИИ для быстрой разработки за 3 дня</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--blue)">👥 Пример: HR-менеджер</h3>
+        <p style="font-size:.85rem"><strong>G:</strong> Снизить текучесть кадров на 20% за полгода<br><strong>R:</strong> Уходит 15% в год, основная причина — нет роста<br><strong>O:</strong> Ввести ИПР / ротацию / менторинг / повысить зарплаты<br><strong>W:</strong> Запустить пилот ИПР для 20 сотрудников с ИИ-поддержкой</p>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--purple)">📊 Пример: Менеджер проекта</h3>
+        <p style="font-size:.85rem"><strong>G:</strong> Запустить новый продукт до конца квартала<br><strong>R:</strong> Отстаём на 2 недели, команда перегружена, бюджет ограничен<br><strong>O:</strong> Сократить scope / добавить ресурс / перенести дедлайн<br><strong>W:</strong> Провести встречу по приоритизации задач с командой</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMPT BUILDER -->
+<section id="prompts" class="alt-bg">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Помощник по промптам</div>
+    <h2 class="section-title">🧩 Конструктор промптов</h2>
+    <p class="section-sub">Создайте идеальный запрос к ИИ за 1 минуту</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('constructor')">🔧 Конструктор</button>
+      <button class="tab" onclick="showTab('improver')">✨ Улучшатель</button>
+      <button class="tab" onclick="showTab('grow-gen')">🌱 GROW-генератор</button>
+      <button class="tab" onclick="showTab('library')">📚 Библиотека</button>
+    </div>
+
+    <div id="constructor" class="tab-content active">
+      <div class="prompt-form">
+        <h3 style="margin-bottom:20px">Заполните поля — получите готовый промпт</h3>
+        <div class="form-group">
+          <label>🎭 Роль ИИ (кем должен быть)</label>
+          <select id="roleSelect">
+            <option value="">Выберите роль...</option>
+            <option>опытный HR-директор</option>
+            <option>бизнес-тренер с 10-летним опытом</option>
+            <option>методист корпоративного университета</option>
+            <option>аналитик данных</option>
+            <option>проект-менеджер</option>
+            <option>маркетолог образовательных продуктов</option>
+            <option>юрисконсульт</option>
+            <option>стратегический консультант</option>
+            <option>коуч и консультант</option>
+            <option>копирайтер</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>🎯 Задача (что нужно сделать)</label>
+          <input type="text" id="taskInput" placeholder="Например: составь программу адаптации, проанализируй данные...">
+        </div>
+        <div class="form-group">
+          <label>📝 Контекст (ситуация, детали)</label>
+          <textarea id="contextInput" rows="3" placeholder="Например: для компании 300 человек, на казахстанском рынке, аудитория — менеджеры среднего звена..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>🚫 Ограничения (что важно учесть)</label>
+          <input type="text" id="limitsInput" placeholder="Например: не более 1 страницы, деловой стиль, без англицизмов...">
+        </div>
+        <div class="form-group">
+          <label>📋 Формат результата</label>
+          <select id="formatSelect">
+            <option value="">Выберите формат...</option>
+            <option>структурированный документ с разделами</option>
+            <option>маркированный список</option>
+            <option>таблица</option>
+            <option>пошаговая инструкция</option>
+            <option>краткое резюме (до 200 слов)</option>
+            <option>план с этапами и сроками</option>
+            <option>шаблон для заполнения</option>
+            <option>сравнительный анализ</option>
+            <option>деловое письмо</option>
+            <option>презентационные тезисы</option>
+          </select>
+        </div>
+        <button class="btn-generate" onclick="buildPrompt()">🚀 Сгенерировать промпт</button>
+        <div id="builtPrompt" class="result-box" style="display:none"></div>
+        <button id="copyBuiltBtn" class="copy-btn" style="display:none" onclick="copyEl(document.getElementById('builtPrompt'))">📋 Скопировать промпт</button>
+      </div>
+    </div>
+
+    <div id="improver" class="tab-content">
+      <div class="prompt-form">
+        <h3 style="margin-bottom:20px">Вставьте свой промпт — получите улучшенную версию</h3>
+        <div class="improve-wrap">
+          <div>
+            <div class="form-group">
+              <label>📝 Ваш промпт</label>
+              <textarea id="improveInput" rows="8" placeholder="Напишите сюда свой запрос к ИИ..."></textarea>
+            </div>
+            <button class="btn-generate" onclick="improvePrompt()">✨ Улучшить промпт</button>
+          </div>
+          <div>
+            <div class="form-group">
+              <label>⚠️ Что не так</label>
+              <div id="issuesList" class="result-box" style="min-height:80px; background:var(--orange-light)">Здесь появится анализ...</div>
+            </div>
+            <div class="form-group">
+              <label>✅ Улучшенный промпт</label>
+              <div id="improvedPrompt" class="result-box" style="min-height:80px">Здесь появится улучшенный вариант...</div>
+            </div>
+            <button class="copy-btn" onclick="copyEl(document.getElementById('improvedPrompt'))">📋 Скопировать</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="grow-gen" class="tab-content">
+      <div class="prompt-form">
+        <h3 style="margin-bottom:20px">Заполните GROW — получите профессиональный промпт</h3>
+        <div class="form-group">
+          <label>🎯 Goal — Цель</label>
+          <input type="text" id="growGoal" placeholder="Чего хотите достичь? Конкретная, измеримая цель...">
+        </div>
+        <div class="form-group">
+          <label>📊 Reality — Реальность</label>
+          <textarea id="growReality" rows="3" placeholder="Какова текущая ситуация? Что есть сейчас?"></textarea>
+        </div>
+        <div class="form-group">
+          <label>💡 Options — Варианты</label>
+          <textarea id="growOptions" rows="3" placeholder="Какие варианты решения вы видите?"></textarea>
+        </div>
+        <div class="form-group">
+          <label>✅ Will — Первый шаг</label>
+          <input type="text" id="growWill" placeholder="Что готовы сделать прямо сейчас?">
+        </div>
+        <button class="btn-generate" onclick="buildGrow()">🌱 Создать GROW-промпт</button>
+        <div id="growResult" class="result-box" style="display:none"></div>
+        <button id="copyGrowBtn" class="copy-btn" style="display:none" onclick="copyEl(document.getElementById('growResult'))">📋 Скопировать</button>
+      </div>
+    </div>
+
+    <div id="library" class="tab-content">
+      <div style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+        <input type="text" id="libSearch" placeholder="🔍 Поиск по библиотеке..." style="border:1.5px solid var(--gray-200); border-radius:8px; padding:8px 14px; font-size:.9rem; flex:1; min-width:200px; background:var(--gray-50); color:var(--gray-900);" oninput="filterLib(this.value)">
+        <select id="catFilter" onchange="filterLib()" style="border:1.5px solid var(--gray-200); border-radius:8px; padding:8px 14px; font-size:.9rem; background:var(--gray-50); color:var(--gray-900);">
+          <option value="">Все категории</option>
+          <option>Деловая переписка</option><option>Отчёты</option><option>Презентации</option>
+          <option>HR</option><option>Обучение</option><option>Закупки</option>
+          <option>Проекты</option><option>Аналитика</option><option>Документооборот</option>
+          <option>Юридическая поддержка</option><option>ИТ</option><option>Управление</option>
+        </select>
+      </div>
+      <div class="prompt-grid" id="libGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="breadcrumbs"><a href="#home">Главная</a> → Вопросы и ответы</div>
+    <h2 class="section-title">❓ Вопросы и ответы</h2>
+    <p class="section-sub">50 самых частых вопросов от новичков</p>
+    <div id="faqContainer"></div>
+  </div>
+</section>
+
+<footer>
+  <p>🚀 Samruk Business Academy — Портал по вайбкодингу</p>
+  <p style="margin-top:8px; opacity:.6">Сделано с ❤️ для сотрудников SBA · 2025</p>
+</footer>
+
+<button id="toTop" onclick="scrollTop()" title="Наверх">↑</button>
+<div class="toast" id="toast">✅ Скопировано!</div>
+
+<script>
+// THEME
+let dark = false;
+function toggleTheme(){
+  dark=!dark;
+  document.documentElement.setAttribute('data-theme', dark?'dark':'');
+  document.querySelector('.btn-theme').textContent = dark?'☀️':'🌙';
+}
+
+// MENU
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// TABS
+function showTab(id){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ACCORDION
+function toggleAccordion(btn){
+  btn.classList.toggle('open');
+  const content = btn.nextElementSibling;
+  content.classList.toggle('open');
+  btn.querySelector('.accordion-arrow').style.transform = content.classList.contains('open')?'rotate(180deg)':'';
+}
+
+// SCROLL TOP
+window.addEventListener('scroll',()=>{
+  document.getElementById('toTop').style.display = window.scrollY>300?'flex':'none';
+});
+function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+// COPY
+function copyEl(el){
+  navigator.clipboard.writeText(el.innerText||el.textContent).then(()=>showToast());
+}
+function copyText(el){
+  navigator.clipboard.writeText(el.innerText||el.textContent).then(()=>{
+    showToast();
+    el.style.background='var(--green-light)';
+    setTimeout(()=>el.style.background='',1500);
+  });
+}
+function showToast(){
+  const t=document.getElementById('toast');
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',2000);
+}
+
+// PROMPT BUILDER
+function buildPrompt(){
+  const role=document.getElementById('roleSelect').value;
+  const task=document.getElementById('taskInput').value;
+  const ctx=document.getElementById('contextInput').value;
+  const limits=document.getElementById('limitsInput').value;
+  const fmt=document.getElementById('formatSelect').value;
+  if(!task){alert('Укажите задачу!');return;}
+  let p='';
+  if(role) p+=`Ты — ${role}.\n\n`;
+  p+=`Задача: ${task}.`;
+  if(ctx) p+=`\n\nКонтекст: ${ctx}.`;
+  if(limits) p+=`\n\nВажно учесть: ${limits}.`;
+  if(fmt) p+=`\n\nФормат результата: ${fmt}.`;
+  const el=document.getElementById('builtPrompt');
+  el.textContent=p; el.style.display='block';
+  document.getElementById('copyBuiltBtn').style.display='inline-block';
+}
+
+// IMPROVE PROMPT
+function improvePrompt(){
+  const input=document.getElementById('improveInput').value.trim();
+  if(!input){alert('Введите промпт!');return;}
+  const issues=[];
+  const improved=[];
+  if(!/(ты|вы|будь|выступ|роль)/i.test(input)) { issues.push('❌ Нет роли ИИ'); improved.push('Добавьте: «Ты — [специалист]»'); }
+  if(input.length<50) { issues.push('❌ Запрос слишком короткий'); improved.push('Добавьте больше контекста и деталей'); }
+  if(!/(формат|таблиц|список|документ|письм|резюм|план)/i.test(input)) { issues.push('❌ Не указан формат результата'); improved.push('Добавьте: «Формат: [таблица/список/документ]»'); }
+  if(!/(компани|организ|сотрудник|команд|проект|отдел)/i.test(input)) { issues.push('⚠️ Мало контекста о ситуации'); improved.push('Опишите: для кого, в какой компании, каков масштаб'); }
+  if(issues.length===0){ issues.push('✅ Промпт хороший!'); }
+  document.getElementById('issuesList').textContent = issues.join('\n');
+  const imp = `Ты — опытный [добавьте специалиста].\n\n${input}\n\nКонтекст: [добавьте детали о компании, аудитории, ситуации].\n\nОграничения: [добавьте если есть].\n\nФормат: [таблица / список / документ / письмо].`;
+  document.getElementById('improvedPrompt').textContent = issues[0].startsWith('✅') ? input : imp;
+}
+
+// GROW
+function buildGrow(){
+  const g=document.getElementById('growGoal').value;
+  const r=document.getElementById('growReality').value;
+  const o=document.getElementById('growOptions').value;
+  const w=document.getElementById('growWill').value;
+  if(!g){alert('Укажите цель!');return;}
+  const p=`Ты — опытный коуч и стратегический консультант.
+
+**Goal (Цель):** ${g}
+
+**Reality (Реальность):** ${r||'[не указана]'}
+
+**Options (Варианты):** ${o||'[помоги определить варианты]'}
+
+**Will (Первый шаг):** ${w||'[помоги определить первый шаг]'}
+
+На основе модели GROW помоги мне:
+1. Оценить мою цель и при необходимости уточнить её
+2. Проанализировать текущую ситуацию
+3. Предложить лучший вариант из возможных
+4. Составить конкретный план действий с первыми шагами
+
+Формат: структурированный план с рекомендациями.`;
+  const el=document.getElementById('growResult');
+  el.textContent=p; el.style.display='block';
+  document.getElementById('copyGrowBtn').style.display='inline-block';
+}
+
+// LIFEHACKS DATA
+const lifehacks=[
+  {n:'01',t:'Всегда указывайте роль',p:'Начинайте каждый запрос с «Ты — [роль]». Это мгновенно повышает качество ответа.'},
+  {n:'02',t:'Задавайте конкретные вопросы',p:'Вместо «расскажи про HR» пишите «назови 5 способов снизить текучесть в IT-компании».'},
+  {n:'03',t:'Итерируйте ответы',p:'Первый ответ — это черновик. Просите улучшить: «Сделай более структурированным» или «Добавь примеры».'},
+  {n:'04',t:'Сохраняйте лучшие промпты',p:'Создайте документ с промптами, которые дали хорошие результаты. Переиспользуйте их.'},
+  {n:'05',t:'Используйте примеры',p:'Покажите ИИ что вы хотите: «Сделай как в этом примере: [пример]».'},
+  {n:'06',t:'Просите структуру',p:'«Ответь в формате: 1) проблема 2) причины 3) решения 4) рекомендации» — даёт чёткий результат.'},
+  {n:'07',t:'Уточняйте аудиторию',p:'«Объясни для человека без технических знаний» или «для топ-менеджмента» — разные уровни ответа.'},
+  {n:'08',t:'Разбивайте большие задачи',p:'Вместо одного гигантского запроса — серия маленьких. ИИ лучше работает с конкретными задачами.'},
+  {n:'09',t:'Проверяйте и уточняйте',p:'После получения ответа спрашивайте: «Что ещё важно добавить?» или «Какие риски не учтены?»'},
+  {n:'10',t:'Задавайте тон и стиль',p:'«Пиши официально», «неформально», «как для коллеги» — ИИ адаптирует стиль под ваши нужды.'},
+  {n:'11',t:'Используйте нумерацию',p:'«Дай 5 конкретных рекомендаций» — чётче, чем «дай рекомендации». Числа ограничивают и фокусируют.'},
+  {n:'12',t:'Просите альтернативы',p:'«Предложи 3 разных варианта» — дайте ИИ возможность показать разные подходы.'},
+  {n:'13',t:'Давайте контекст о компании',p:'«Мы — корпоративный университет, 300 сотрудников, Казахстан» — ИИ будет точнее.'},
+  {n:'14',t:'Не бойтесь переспрашивать',p:'«Объясни простыми словами», «приведи пример», «разбери подробнее» — всё это работает отлично.'},
+  {n:'15',t:'Используйте ИИ для шаблонов',p:'Попросите ИИ создать шаблон — потом просто заполняйте его под разные ситуации.'},
+  {n:'16',t:'Просите критику',p:'«Найди недостатки в этом плане» или «что я упустил?» — ИИ хорошо находит слабые места.'},
+  {n:'17',t:'Работайте с реальными данными',p:'Вставляйте реальные цифры, факты, ситуации — качество ответа резко вырастет.'},
+  {n:'18',t:'Используйте структуру PRD',p:'Для сложных проектов опишите всё в PRD.md — ИИ поймёт задачу гораздо лучше.'},
+  {n:'19',t:'Просите резюме длинных текстов',p:'«Суммируй этот документ в 5 ключевых пунктах» — экономит часы на чтении.'},
+  {n:'20',t:'Пробуйте разные модели',p:'ChatGPT, Claude, Perplexity — разные модели сильны в разных задачах. Экспериментируйте.'},
+  {n:'21',t:'Используйте ИИ для переводов',p:'ИИ переводит с учётом контекста и стиля — лучше чем Google Translate для деловых текстов.'},
+  {n:'22',t:'Задавайте вопросы шаг за шагом',p:'«Сначала объясни проблему, потом причины, потом решения» — пошаговый подход даёт лучшие ответы.'},
+  {n:'23',t:'Просите проверить орфографию',p:'«Проверь этот текст на ошибки и предложи улучшения стиля» — быстрее и лучше ручной проверки.'},
+  {n:'24',t:'Используйте для брейнсторминга',p:'«Придумай 20 идей для...» — ИИ отлично генерирует идеи, вы выбираете лучшие.'},
+  {n:'25',t:'Просите объяснить термины',p:'«Объясни что такое [термин] на примере нашей работы» — ИИ адаптирует объяснение.'},
+  {n:'26',t:'Создавайте чек-листы',p:'«Создай чек-лист для...» — ИИ создаёт подробные списки для любого процесса.'},
+  {n:'27',t:'Используйте для подготовки к встречам',p:'«Помоги подготовиться к переговорам о [тема]» — ИИ даст аргументы и контраргументы.'},
+  {n:'28',t:'Просите упростить',p:'«Перепиши это более простым языком» — отлично для документов, которые читают все сотрудники.'},
+  {n:'29',t:'Используйте в конце рабочего дня',p:'«Суммируй задачи дня и создай план на завтра» — помогает структурировать работу.'},
+  {n:'30',t:'Экспериментируйте смело',p:'Нет правильного или неправильного способа — пробуйте, итерируйте, находите свой стиль.'},
+];
+
+const errors=[
+  {n:'01',t:'Слишком короткий запрос',p:'❌ «Напиши отчёт» → ✅ «Напиши ежемесячный отчёт об обучении сотрудников, формат: таблица с KPI»'},
+  {n:'02',t:'Нет роли',p:'❌ «Составь план» → ✅ «Ты — опытный PM. Составь план проекта с этапами и рисками»'},
+  {n:'03',t:'Нет контекста',p:'❌ «Помоги с презентацией» → ✅ «Помоги со структурой презентации для совета директоров о результатах обучения за год»'},
+  {n:'04',t:'Нет формата результата',p:'❌ «Расскажи про мотивацию» → ✅ «Перечисли 10 методов мотивации в виде таблицы: метод, описание, стоимость»'},
+  {n:'05',t:'Принимать первый ответ',p:'Первый ответ ИИ — черновик. Всегда просите улучшить, уточнить, добавить детали.'},
+  {n:'06',t:'Не уточнять аудиторию',p:'«Напиши инструкцию» без указания «для кого» — результат будет слишком общим. Указывайте аудиторию.'},
+  {n:'07',t:'Слепо доверять ИИ',p:'ИИ может ошибаться, особенно с фактами, датами, ссылками. Проверяйте важную информацию.'},
+  {n:'08',t:'Не проверять на галлюцинации',p:'ИИ может придумывать несуществующие исследования, цитаты, данные. Всегда верифицируйте.'},
+  {n:'09',t:'Задавать несколько вопросов сразу',p:'Один запрос = одна чёткая задача. Несколько задач в одном запросе — путают ИИ.'},
+  {n:'10',t:'Не давать примеры',p:'«Напиши как-нибудь в этом стиле» без примера — ИИ угадывает. Дайте конкретный образец.'},
+  {n:'11',t:'Использовать только один инструмент',p:'ChatGPT хорош для одного, Claude для другого. Пробуйте разные — у каждого свои сильные стороны.'},
+  {n:'12',t:'Бояться длинных промптов',p:'Длинный подробный промпт даёт лучший результат. Не жалейте слов на описание задачи.'},
+  {n:'13',t:'Не давать обратную связь',p:'Если ответ не подходит — объясните почему. «Это слишком официально, нужно живее» работает.'},
+  {n:'14',t:'Ждать идеального с первого раза',p:'Вайбкодинг — это итерации. Норма: 3-5 уточнений для получения нужного результата.'},
+  {n:'15',t:'Не сохранять хорошие промпты',p:'Нашли работающий промпт? Сохраните! Это ценный ресурс для будущей работы.'},
+  {n:'16',t:'Вставлять конфиденциальные данные',p:'Не вставляйте в публичные ИИ персональные данные сотрудников, коммерческие тайны, пароли.'},
+  {n:'17',t:'Использовать жаргон без объяснений',p:'«Нам нужен agile-подход для HR» — лучше объяснить что именно вы имеете в виду.'},
+  {n:'18',t:'Не указывать ограничения',p:'«Напиши статью» без «не более 500 слов» → получите эссе на 5 страниц.'},
+  {n:'19',t:'Ожидать телепатии',p:'ИИ не знает вашего контекста если вы его не описали. Чем больше деталей — тем лучше ответ.'},
+  {n:'20',t:'Копировать без редактирования',p:'Ответ ИИ — заготовка. Всегда адаптируйте под реальную ситуацию и добавляйте свою экспертизу.'},
+  {n:'21',t:'Забывать про тон',p:'«Официальный», «дружелюбный», «строгий» — укажите тон, иначе ИИ выберет нейтральный.'},
+  {n:'22',t:'Не проверять логику',p:'ИИ может предложить технически грамотный, но нереалистичный план. Проверяйте здравым смыслом.'},
+  {n:'23',t:'Пропускать этап уточнения',p:'«Уточни что именно ты имеешь в виду под X?» — задавайте уточняющие вопросы до работы.'},
+  {n:'24',t:'Игнорировать предупреждения ИИ',p:'Когда ИИ говорит «я не уверен» или «это стоит проверить» — действительно проверьте.'},
+  {n:'25',t:'Использовать устаревшие модели',p:'ИИ быстро развивается. Следите за обновлениями и используйте актуальные версии.'},
+  {n:'26',t:'Не структурировать длинные задачи',p:'Для сложного проекта сначала попросите структуру, потом заполняйте каждый раздел отдельно.'},
+  {n:'27',t:'Ожидать решения всех проблем',p:'ИИ — инструмент, не волшебник. Он помогает, но финальное решение принимаете вы.'},
+  {n:'28',t:'Не указывать язык',p:'ИИ отвечает на том языке, на котором вы пишете. Если нужен конкретный язык — укажите явно.'},
+  {n:'29',t:'Перегружать одним запросом',p:'«Напиши стратегию, план, бюджет, KPI и дорожную карту» — слишком много. Разбейте на шаги.'},
+  {n:'30',t:'Сдаваться после неудачного ответа',p:'Плохой ответ — это сигнал улучшить промпт. Попробуйте по-другому, добавьте деталей.'},
+];
+
+// RENDER LIFEHACKS
+const lhGrid = document.getElementById('lifehacksGrid');
+lifehacks.forEach(h=>{
+  lhGrid.innerHTML+=`<div class="lh-card"><div class="lh-num">ЛАЙФХАК ${h.n}</div><h4>${h.t}</h4><p>${h.p}</p></div>`;
+});
+const errGrid = document.getElementById('errorsGrid');
+errors.forEach(e=>{
+  errGrid.innerHTML+=`<div class="lh-card err-card"><div class="lh-num">ОШИБКА ${e.n}</div><h4>${e.t}</h4><p>${e.p}</p></div>`;
+});
+
+// LIBRARY DATA
+const library=[
+  {cat:'Деловая переписка',title:'Письмо о переносе встречи',text:'Ты — помощник руководителя. Напиши вежливое официальное письмо партнёрам о переносе встречи с [дата1] на [дата2]. Причина: [причина]. Тон: профессиональный, краткий.'},
+  {cat:'Деловая переписка',title:'Ответ на жалобу',text:'Ты — специалист по работе с клиентами. Напиши корректный ответ на жалобу клиента по поводу [проблема]. Признай ситуацию, объясни что сделано, предложи решение.'},
+  {cat:'Деловая переписка',title:'Благодарственное письмо',text:'Ты — руководитель. Напиши тёплое благодарственное письмо команде за успешное завершение [проект/мероприятие]. Отметь ключевые достижения.'},
+  {cat:'Деловая переписка',title:'Запрос коммерческого предложения',text:'Ты — менеджер по закупкам. Напиши официальный запрос коммерческого предложения поставщику [название] на [услуга/товар]. Укажи требования и срок ответа.'},
+  {cat:'Деловая переписка',title:'Приглашение на мероприятие',text:'Ты — организатор мероприятий. Напиши официальное приглашение на [название события], дата [дата], место [место]. Аудитория: [кто приглашается].'},
+  {cat:'Деловая переписка',title:'Письмо-напоминание',text:'Ты — ассистент. Напиши вежливое письмо-напоминание о [задача/дедлайн/документ] для [получатель]. Тон: дружелюбный но настойчивый.'},
+  {cat:'Деловая переписка',title:'Объяснительная записка',text:'Помоги написать корректную объяснительную записку по ситуации: [ситуация]. Стиль: официальный, конструктивный, без оправданий.'},
+  {cat:'Деловая переписка',title:'Коммерческое предложение',text:'Ты — менеджер по продажам. Напиши коммерческое предложение для [клиент] на [услуга]. Структура: проблема клиента → наше решение → преимущества → стоимость → призыв к действию.'},
+  {cat:'Отчёты',title:'Ежемесячный отчёт об обучении',text:'Ты — руководитель учебного центра. Создай шаблон ежемесячного отчёта об обучении. Разделы: охват, программы, результаты, KPI, проблемы, планы. Формат: таблица + текст.'},
+  {cat:'Отчёты',title:'Отчёт о проекте',text:'Ты — проект-менеджер. Напиши итоговый отчёт о проекте [название]. Разделы: цели, что достигнуто, сроки, бюджет, уроки, рекомендации.'},
+  {cat:'Отчёты',title:'Отчёт о мероприятии',text:'Ты — организатор. Создай отчёт о мероприятии [название]. Включи: количество участников, программу, ключевые моменты, обратную связь, рекомендации для следующего раза.'},
+  {cat:'Отчёты',title:'Квартальный дашборд HR',text:'Ты — HR-аналитик. Создай структуру квартального HR-дашборда. Метрики: укомплектованность, текучесть, удовлетворённость, обучение, рекрутинг. Формат: таблица с трендами.'},
+  {cat:'Презентации',title:'Структура стратегической презентации',text:'Ты — консультант по коммуникациям. Создай структуру 20-минутной презентации стратегии [тема] для совета директоров. Не более 12 слайдов. Каждый слайд — одна идея.'},
+  {cat:'Презентации',title:'Тезисы для слайдов',text:'Ты — презентационный тренер. Преобразуй этот текст в лаконичные тезисы для презентации: [текст]. Каждый слайд: 1 заголовок + 3-4 ключевых пункта.'},
+  {cat:'Презентации',title:'История для питча',text:'Ты — сторителлер и бизнес-консультант. Помоги рассказать историю нашего продукта [описание] в формате питча: проблема → решение → доказательства → призыв.'},
+  {cat:'HR',title:'Программа адаптации',text:'Ты — HR-бизнес-партнёр. Разработай программу адаптации для [должность] на первые 90 дней. Структура: задачи по неделям, ключевые встречи, ожидаемые результаты.'},
+  {cat:'HR',title:'Описание вакансии',text:'Ты — HR-специалист. Напиши привлекательное описание вакансии [должность]. Включи: о компании, задачи, требования, что предлагаем. Тон: живой, честный, без штампов.'},
+  {cat:'HR',title:'Вопросы для интервью',text:'Ты — HR-эксперт. Составь 15 интервью-вопросов для оценки кандидата на [должность]. Включи: компетентность, мотивацию, ценности, кейсовые вопросы.'},
+  {cat:'HR',title:'Политика обучения',text:'Ты — HR-директор. Составь политику компании об обучении и развитии сотрудников. Разделы: цели, виды обучения, кто может, процедура, компенсация, обязательства.'},
+  {cat:'HR',title:'Система мотивации',text:'Ты — HR-консультант. Предложи систему нематериальной мотивации для [тип компании, размер]. 10 инструментов с описанием и стоимостью внедрения.'},
+  {cat:'Обучение',title:'Программа тренинга',text:'Ты — бизнес-тренер. Разработай программу однодневного тренинга по [тема] для [аудитория]. Включи: цели, расписание, методы, упражнения, материалы, оценку результатов.'},
+  {cat:'Обучение',title:'Кейс для обучения',text:'Ты — методист. Разработай обучающий кейс по теме [тема] для [аудитория]. Ситуация должна быть реалистичной, с вопросами для обсуждения и вариантами решений.'},
+  {cat:'Обучение',title:'Тест для оценки знаний',text:'Ты — методист-оценщик. Создай тест на [количество] вопросов по теме [тема]. Уровень: [базовый/продвинутый]. 4 варианта ответа, укажи правильные.'},
+  {cat:'Обучение',title:'Учебная программа курса',text:'Ты — эксперт в instructional design. Разработай учебную программу онлайн-курса [название] для [аудитория]. Длительность: [часы]. Структура: модули, уроки, цели, методы.'},
+  {cat:'Закупки',title:'Техническое задание',text:'Ты — специалист по закупкам. Составь ТЗ для тендера на [услуга/товар]. Включи: предмет, требования, объём, сроки, критерии оценки, формат предложения.'},
+  {cat:'Закупки',title:'Сравнение поставщиков',text:'Ты — аналитик закупок. Создай матрицу для сравнения поставщиков [услуга]. Критерии: цена, качество, сроки, репутация, гарантии. Формат: таблица с весами.'},
+  {cat:'Проекты',title:'Устав проекта',text:'Ты — опытный PM. Составь устав проекта [название]. Разделы: цель, задачи, команда, сроки, бюджет, риски, критерии успеха. Формат: структурированный документ.'},
+  {cat:'Проекты',title:'Дорожная карта',text:'Ты — стратегический PM. Создай дорожную карту проекта [название] на [период]. Этапы, ключевые точки (milestones), зависимости. Формат: таблица или текстовый Gantt.'},
+  {cat:'Проекты',title:'Реестр рисков',text:'Ты — риск-менеджер. Создай реестр рисков для проекта [название]. Колонки: риск, вероятность, влияние, приоритет, митигация, владелец.'},
+  {cat:'Проекты',title:'Протокол встречи',text:'Ты — ассистент PM. Напиши шаблон протокола проектной встречи. Разделы: участники, повестка, обсуждение, решения, задачи (кто/что/когда), следующая встреча.'},
+  {cat:'Аналитика',title:'Анализ конкурентов',text:'Ты — бизнес-аналитик. Проведи сравнительный анализ [наша компания] vs [конкуренты] по критериям: [список]. Формат: сравнительная таблица с выводами.'},
+  {cat:'Аналитика',title:'SWOT-анализ',text:'Ты — стратегический консультант. Проведи SWOT-анализ [объект: компания/проект/продукт]. Будь конкретным, избегай общих фраз. Предложи стратегические выводы.'},
+  {cat:'Аналитика',title:'Анализ обратной связи',text:'Ты — аналитик. Вот результаты опроса: [данные]. Выяви ключевые паттерны, сформулируй 3-5 инсайтов и дай конкретные рекомендации.'},
+  {cat:'Аналитика',title:'Обзор лучших практик',text:'Ты — аналитик-исследователь. Опиши лучшие мировые практики в области [тема]. Примеры компаний, что конкретно они делают, результаты.'},
+  {cat:'Документооборот',title:'Регламент процесса',text:'Ты — специалист по бизнес-процессам. Напиши регламент процесса [название]. Шаги, ответственные, сроки, документы, исключения. Стиль: официальный.'},
+  {cat:'Документооборот',title:'Должностная инструкция',text:'Ты — HR-методолог. Составь должностную инструкцию для [должность] в [тип компании]. Разделы: цель, подчинённость, функции, KPI, требования, права.'},
+  {cat:'Документооборот',title:'Положение об отделе',text:'Ты — юрист и HR. Составь положение об отделе [название]. Разделы: цели, задачи, структура, функции, взаимодействие, ответственность.'},
+  {cat:'Документооборот',title:'Инструкция для пользователя',text:'Ты — технический писатель. Напиши пошаговую инструкцию по использованию [система/инструмент] для нетехнических пользователей. Просто, с примерами, без жаргона.'},
+  {cat:'Юридическая поддержка',title:'Анализ договора',text:'Ты — юрист с опытом в корпоративном праве. Проанализируй этот договор [вставить текст]. Выяви потенциальные риски, неоднозначные формулировки, дай рекомендации.'},
+  {cat:'Юридическая поддержка',title:'Объяснение закона',text:'Ты — юрист-консультант. Объясни простыми словами что означает [статья закона / норма] для обычного работника. Приведи практический пример.'},
+  {cat:'Юридическая поддержка',title:'Шаблон NDA',text:'Ты — корпоративный юрист. Создай шаблон соглашения о неразглашении (NDA) для [ситуация]. Включи стандартные защитные клаузулы, укажи где нужно заполнить детали.'},
+  {cat:'ИТ',title:'Выбор программного обеспечения',text:'Ты — ИТ-консультант. Порекомендуй 5 лучших решений для [задача] для компании [размер]. Для каждого: функционал, цена, плюсы, минусы, рекомендация.'},
+  {cat:'ИТ',title:'Техническое задание на разработку',text:'Ты — бизнес-аналитик и ИТ-консультант. Помоги написать техническое задание на разработку [система/приложение]. Для нетехнического заказчика.'},
+  {cat:'ИТ',title:'Инструкция по кибербезопасности',text:'Ты — специалист по кибербезопасности. Напиши понятную инструкцию для сотрудников по базовой кибергигиене. Без технических терминов, с примерами угроз.'},
+  {cat:'Управление',title:'Постановка задачи',text:'Ты — коуч и руководитель. Помоги сформулировать задачу для сотрудника по методу SMART: цель [задача]. Конкретно, измеримо, достижимо, реалистично, с дедлайном.'},
+  {cat:'Управление',title:'Обратная связь сотруднику',text:'Ты — опытный руководитель и коуч. Помоги дать конструктивную обратную связь по ситуации: [ситуация]. Тон: поддерживающий и чёткий. Модель: факт → влияние → ожидание.'},
+  {cat:'Управление',title:'Повестка совещания',text:'Ты — эффективный руководитель. Составь повестку совещания по теме [тема] на [время] минут. Включи: цель встречи, вопросы с таймингом, формат принятия решений.'},
+  {cat:'Управление',title:'Стратегия команды',text:'Ты — стратегический консультант. Помоги сформулировать стратегию команды [название] на год. Включи: миссию, цели, ключевые инициативы, KPI, ресурсы.'},
+  {cat:'Управление',title:'Делегирование задачи',text:'Ты — менеджмент-коуч. Помоги грамотно делегировать задачу [задача] сотруднику [профиль]. Что объяснить, как проверить понимание, какие точки контроля установить.'},
+  {cat:'Управление',title:'Управление конфликтом',text:'Ты — HR-медиатор и коуч. Помоги разрешить ситуацию: [описание конфликта]. Дай шаги для обеих сторон, формат разговора, возможные решения.'},
+];
+
+// RENDER LIBRARY
+function renderLib(data){
+  const grid=document.getElementById('libGrid');
+  grid.innerHTML='';
+  data.forEach(p=>{
+    grid.innerHTML+=`<div class="prompt-card" data-cat="${p.cat}"><div class="cat">${p.cat}</div><h4>${p.title}</h4><div class="text" onclick="copyText(this)">${p.text}</div></div>`;
+  });
+}
+renderLib(library);
+
+function filterLib(val){
+  const q=(val||document.getElementById('libSearch').value||'').toLowerCase();
+  const cat=document.getElementById('catFilter').value;
+  const filtered=library.filter(p=>{
+    const matchQ=!q||p.title.toLowerCase().includes(q)||p.text.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q);
+    const matchCat=!cat||p.cat===cat;
+    return matchQ&&matchCat;
+  });
+  renderLib(filtered);
+}
+
+// FAQ DATA
+const faqData=[
+  {q:'Нужно ли знать программирование?',a:'Абсолютно нет! Вайбкодинг именно для того и создан, чтобы люди без технических знаний могли создавать цифровые продукты. Вам нужны только слова и желание попробовать.'},
+  {q:'С чего начать совсем новичку?',a:'Зайдите на claude.ai или chatgpt.com, зарегистрируйтесь и напишите свой первый запрос. Например: «Помоги составить план рабочего дня для менеджера». Этого достаточно для начала!'},
+  {q:'Может ли ИИ ошибаться?',a:'Да, ИИ может ошибаться — особенно с фактами, датами, числами и юридическими деталями. Всегда проверяйте важную информацию из других источников. Используйте ИИ как умный черновик.'},
+  {q:'Безопасно ли использовать ИИ в работе?',a:'Публичные ИИ-инструменты не стоит использовать для конфиденциальных данных — персональных данных сотрудников, коммерческих тайн, паролей. Для чувствительной информации используйте корпоративные решения.'},
+  {q:'Можно ли использовать служебные документы?',a:'Будьте осторожны. Не вставляйте в публичные ИИ-инструменты секретные данные, персональные данные сотрудников и клиентов, коммерческую тайну. Для таких задач нужно корпоративное ИИ-решение.'},
+  {q:'Как проверить ответ ИИ?',a:'Используйте критическое мышление: проверяйте факты в открытых источниках, спрашивайте коллег-экспертов, используйте Perplexity для поиска с источниками. Никогда не публикуйте непроверенную информацию.'},
+  {q:'Как выбрать подходящий инструмент?',a:'Для ежедневных задач (тексты, анализ) — ChatGPT или Claude. Для презентаций — Gamma. Для поиска информации — Perplexity. Для создания сайтов — Lovable или Bolt.new. Начните с ChatGPT или Claude — они самые универсальные.'},
+  {q:'Сколько это стоит?',a:'Большинство инструментов имеют бесплатный план, которого достаточно для начала: ChatGPT (бесплатный GPT-3.5), Claude (бесплатный базовый план), Perplexity, GitHub — всё бесплатно. Платные планы нужны для интенсивного использования.'},
+  {q:'Заменит ли ИИ мою работу?',a:'ИИ — инструмент, который усиливает вашу эффективность, а не заменяет вас. Он не обладает опытом, суждением, пониманием контекста организации и человеческим интеллектом. Используйте ИИ чтобы стать ценнее.'},
+  {q:'Что такое промпт?',a:'Промпт — это ваш запрос или инструкция для ИИ. Это то, что вы пишете в чат ИИ-инструмента. Чем точнее и подробнее промпт, тем лучше ответ.'},
+  {q:'Почему ИИ даёт разные ответы на один вопрос?',a:'ИИ генерирует ответ каждый раз заново, поэтому ответы немного отличаются. Это нормально! Если ответ не подошёл — перефразируйте запрос или попросите попробовать ещё раз.'},
+  {q:'Можно ли использовать ИИ для обучения сотрудников?',a:'Да! ИИ отлично помогает создавать обучающие материалы, тесты, кейсы, программы тренингов, учебные сценарии. Это один из главных кейсов для сотрудников SBA.'},
+  {q:'Что такое «галлюцинации» ИИ?',a:'Это когда ИИ уверенно говорит неправду — придумывает несуществующие исследования, цитаты, факты. Решение: всегда проверяйте важные факты, особенно цифры, даты, имена.'},
+  {q:'Как улучшить качество ответов ИИ?',a:'Добавляйте роль («Ты — HR-директор»), контекст (о компании, ситуации), ограничения (стиль, объём) и формат результата. Используйте формулу: Роль + Задача + Контекст + Ограничения + Формат.'},
+  {q:'Нужен ли VPN для использования ИИ?',a:'Некоторые сервисы могут быть недоступны в вашем регионе. Уточните у ИТ-отдела правила использования VPN в компании. Многие сервисы работают без VPN.'},
+  {q:'Как сохранить историю разговоров с ИИ?',a:'Большинство инструментов сохраняют историю автоматически в вашем аккаунте. Можно также копировать важные ответы в Notion, Word или другой документ.'},
+  {q:'Можно ли использовать ИИ для анализа данных?',a:'Да! Вставьте данные (таблицу, список, текст) в запрос и попросите ИИ проанализировать. Claude и ChatGPT хорошо работают с небольшими наборами данных.'},
+  {q:'Что лучше — ChatGPT или Claude?',a:'Оба отличны, но по-разному. ChatGPT лучше для программирования и технических задач. Claude лучше для длинных документов, анализа и нюансированных текстов. Попробуйте оба!'},
+  {q:'Как использовать ИИ для презентаций?',a:'Попробуйте Gamma.app — он создаёт красивые презентации по описанию. Или используйте ChatGPT/Claude для создания структуры и текста, а потом оформите в PowerPoint.'},
+  {q:'Что делать если ИИ не понимает задачу?',a:'Переформулируйте. Добавьте больше контекста. Разбейте на меньшие шаги. Начните с «Объясни как ты понял мою задачу» — это помогает выявить непонимание.'},
+  {q:'Можно ли использовать ИИ для HR-задач?',a:'Абсолютно! ИИ отлично помогает с: составлением вакансий, программами адаптации, политиками компании, вопросами для интервью, системами мотивации, KPI и многим другим.'},
+  {q:'Как использовать ИИ для закупок?',a:'ИИ помогает: составлять ТЗ, анализировать КП поставщиков, создавать матрицы сравнения, писать оценочные критерии, готовить отчёты по тендерам.'},
+  {q:'Как долго занимает обучение вайбкодингу?',a:'Базовые навыки — 1-2 дня практики. Первые результаты — в первые 15 минут. Уверенное владение — 2-4 недели регулярного использования. Главное — практиковаться каждый день.'},
+  {q:'Что такое GitHub и зачем он нужен?',a:'GitHub — облачное хранилище для проектов. Используется для хранения файлов сайтов и приложений, а также их бесплатной публикации через GitHub Pages. Для начинающих необязателен.'},
+  {q:'Как создать сайт без программирования?',a:'Используйте Lovable.dev или Bolt.new — опишите словами что хотите, они создадут сайт. Или используйте Claude/ChatGPT для создания HTML-кода, который потом разместите на Netlify.'},
+  {q:'Можно ли доверять юридическим советам ИИ?',a:'Используйте ИИ для понимания общих принципов и получения черновика, но для важных юридических вопросов всегда консультируйтесь с профессиональным юристом. ИИ — помощник, не замена юриста.'},
+  {q:'Как использовать ИИ для аналитики?',a:'Вставьте данные в чат и попросите: проанализировать, выявить тренды, сравнить, сделать выводы. Perplexity хорош для актуальных данных, Claude и ChatGPT — для анализа предоставленных данных.'},
+  {q:'Насколько конфиденциальны мои разговоры с ИИ?',a:'Большинство публичных ИИ-сервисов используют разговоры для улучшения моделей (если не отключено в настройках). Не вставляйте в них персональные данные, пароли, коммерческую тайну.'},
+  {q:'Что такое контекстное окно ИИ?',a:'Это объём информации, который ИИ может держать в памяти в одном разговоре. В длинных разговорах ИИ может «забыть» начало. Если это важно — напомните в начале каждого нового сообщения.'},
+  {q:'Как попросить ИИ исправить ошибки?',a:'Просто скажите: «Здесь есть ошибка: [описание]», «Это неверно, потому что...», «Пересмотри этот раздел учитывая...». ИИ легко корректирует ответы при конкретной обратной связи.'},
+  {q:'Можно ли использовать ИИ для обучения новых сотрудников?',a:'Да! ИИ помогает создавать онбординг-материалы, FAQ для новичков, интерактивные инструкции, обучающие сценарии, системы проверки знаний.'},
+  {q:'Что такое вайбкодинг простыми словами?',a:'Вайбкодинг — это когда вы говорите ИИ что хотите создать (сайт, приложение, документ), а он создаёт за вас, без необходимости знать программирование. Вы управляете через описание на обычном языке.'},
+  {q:'Как работает ИИ?',a:'ИИ — это система, обученная на огромном количестве текстов. Он находит паттерны и генерирует наиболее вероятный полезный ответ. Не думает «как человек», но очень хорошо работает с языком.'},
+  {q:'Есть ли у ИИ предел возможностей?',a:'Да. ИИ не умеет: самостоятельно принимать бизнес-решения, физически взаимодействовать с миром, знать события после даты обучения (обычно 2023-2024), всегда быть точным в числах.'},
+  {q:'Как использовать ИИ для управления проектами?',a:'ИИ помогает с: созданием уставов проектов, дорожных карт, реестров рисков, протоколов встреч, отчётов о статусе, коммуникаций со стейкхолдерами.'},
+  {q:'Как написать первый промпт?',a:'Начните просто: «Ты — [ваша роль]. Помоги мне [задача].» Например: «Ты — HR-менеджер. Помоги составить план мероприятий по тимбилдингу на квартал.» Это уже хороший промпт!'},
+  {q:'Что делать с плохим ответом ИИ?',a:'Не сдавайтесь! Скажите что не так: «Ответ слишком общий», «Добавь конкретные примеры», «Сделай короче/подробнее», «Измени тон на более официальный». Итерируйте до нужного результата.'},
+  {q:'Как использовать ИИ для маркетинга и коммуникаций?',a:'ИИ отлично пишет: анонсы мероприятий, посты в соцсети, пресс-релизы, email-рассылки, рекламные тексты, описания продуктов, сценарии видео.'},
+  {q:'Что лучше: бесплатный или платный план ИИ?',a:'Для начала бесплатный план более чем достаточен. Платный нужен при интенсивном использовании, нужде в последних моделях или доступе к дополнительным функциям (анализ изображений, работа с файлами).'},
+  {q:'Как использовать ИИ для экономии времени?',a:'Делегируйте ИИ рутину: составление черновиков писем, создание шаблонов, исследование тем, суммирование длинных текстов, создание структур документов. Вы фокусируетесь на решениях, ИИ — на исполнении.'},
+  {q:'Безопасно ли хранить документы на GitHub?',a:'Public-репозитории видны всем — не храните там конфиденциальное. Private-репозитории доступны только вам и тем, кому вы дадите доступ. Для корпоративных нужд лучше private.'},
+  {q:'Как быстро научиться вайбкодингу?',a:'Лучший способ — практика. Каждый день используйте ИИ хотя бы для одной рабочей задачи. Через 2 недели это войдёт в привычку, через месяц — станет второй натурой.'},
+  {q:'Какие риски есть при использовании ИИ?',a:'Главные риски: утечка конфиденциальных данных, использование непроверенной информации, слепое доверие результатам, авторские права на генерированный контент. Всегда проверяйте и применяйте здравый смысл.'},
+  {q:'Можно ли использовать ИИ для обучения и развития персонала?',a:'Да, это один из главных кейсов! Создание программ обучения, тестов, кейсов, учебных материалов, симуляций, персонализированных учебных путей — всё это ИИ делает быстро и качественно.'},
+  {q:'Что такое «итерация» в работе с ИИ?',a:'Итерация — это процесс улучшения результата через серию последовательных уточнений. Первый ответ → уточнение → второй ответ → ещё уточнение. Обычно 3-5 итераций дают отличный результат.'},
+  {q:'Как использовать ИИ для стратегического планирования?',a:'ИИ помогает: проводить SWOT-анализ, формулировать стратегические цели, строить дорожные карты, анализировать тренды, готовить материалы для стратегических сессий.'},
+  {q:'Должен ли ИИ заменить совещания?',a:'Нет, но может сделать их эффективнее! Используйте ИИ для: подготовки повестки, создания материалов, суммирования результатов, написания протоколов. Само человеческое взаимодействие ИИ не заменит.'},
+  {q:'Как не стать зависимым от ИИ?',a:'Используйте ИИ как усилитель, а не костыль. Всегда понимайте суть задачи сами, проверяйте результаты ИИ, развивайте собственную экспертизу параллельно. ИИ — инструмент, а не замена мышлению.'},
+  {q:'Что делать если ИИ отказывается помочь?',a:'Переформулируйте запрос. ИИ имеет ограничения на контент, нарушающий этические нормы или потенциально вредный. Если задача легитимна — попробуйте другой подход или уточните контекст.'},
+  {q:'Как поделиться результатами ИИ с командой?',a:'Скопируйте результат в общий документ (Google Docs, Confluence, Notion), отправьте по email, или сохраните в корпоративную базу знаний. Главное — доработайте под вашу реальную ситуацию.'},
+];
+
+// RENDER FAQ
+const faqContainer=document.getElementById('faqContainer');
+faqData.forEach((f,i)=>{
+  faqContainer.innerHTML+=`
+  <div class="accordion-item">
+    <button class="accordion-btn" onclick="toggleAccordion(this)">
+      <span>${i+1}. ${f.q}</span>
+      <span class="accordion-arrow">▼</span>
+    </button>
+    <div class="accordion-content">${f.a}</div>
+  </div>`;
+});
+
+// SEARCH
+const searchData=[
+  {text:'Что такое вайбкодинг', href:'#what'},
+  {text:'Личный ИИ-сотрудник', href:'#ai-employee'},
+  {text:'Как писать промпты', href:'#instructions'},
+  {text:'Инструменты: ChatGPT Claude Cursor', href:'#tools'},
+  {text:'Лайфхаки и ошибки', href:'#lifehacks'},
+  {text:'Модель GROW', href:'#grow'},
+  {text:'Конструктор промптов', href:'#prompts'},
+  {text:'FAQ вопросы ответы', href:'#faq'},
+  {text:'GitHub публикация', href:'#instructions'},
+  {text:'PRD документ', href:'#instructions'},
+];
+
+function doSearch(q){
+  const box=document.getElementById('searchResults');
+  if(!q||q.length<2){box.style.display='none';return;}
+  const results=searchData.filter(s=>s.text.toLowerCase().includes(q.toLowerCase()));
+  if(!results.length){box.style.display='none';return;}
+  box.innerHTML='<strong>Результаты поиска:</strong> '+results.map(r=>`<a href="${r.href}" onclick="document.getElementById('searchResults').style.display='none'; document.getElementById('searchInput').value=''" style="color:var(--blue); margin:0 10px">${r.text}</a>`).join('');
+  box.style.display='block';
+}
+
+// Close search on outside click
+document.addEventListener('click',e=>{
+  if(!e.target.closest('nav')) document.getElementById('searchResults').style.display='none';
+});
+</script>
+</body>
+</html>
