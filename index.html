@@ -218,9 +218,188 @@
 
   /* highlight search */
   mark { background: yellow; border-radius: 2px; }
+
+  /* ===== SECURITY MODAL ===== */
+  .sec-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.75);
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    backdrop-filter: blur(4px);
+  }
+  .sec-overlay.sec-hidden { display: none; }
+  .sec-modal {
+    background: white; border-radius: 16px;
+    max-width: 700px; width: 100%; max-height: 90vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 64px rgba(0,0,0,.45);
+    overflow: hidden;
+  }
+  [data-theme="dark"] .sec-modal { background: #1f2937; }
+  .sec-header {
+    background: linear-gradient(135deg,#1a56db 0%,#7c3aed 100%);
+    color: white; padding: 26px 32px 22px; flex-shrink: 0;
+  }
+  .sec-header-top { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .sec-lock-icon { font-size: 2.2rem; flex-shrink: 0; }
+  .sec-header h2 { font-size: 1.1rem; font-weight: 700; line-height: 1.4; margin: 0; }
+  .sec-subtitle { font-size: .88rem; opacity: .88; margin: 0; line-height: 1.5; }
+  .sec-body { overflow-y: auto; padding: 22px 32px; flex: 1; }
+  .sec-body::-webkit-scrollbar { width: 6px; }
+  .sec-body::-webkit-scrollbar-track { background: var(--gray-100); }
+  .sec-body::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 3px; }
+  .sec-section { margin-bottom: 18px; }
+  .sec-section-title {
+    font-size: .78rem; font-weight: 700; color: var(--gray-500);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px;
+  }
+  .sec-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 5px; }
+  .sec-list li {
+    font-size: .87rem; line-height: 1.5;
+    padding: 8px 12px; border-radius: 8px;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .sec-list.sec-forbidden li { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+  [data-theme="dark"] .sec-list.sec-forbidden li { background: #450a0a; color: #fca5a5; border-color: #7f1d1d; }
+  .sec-list.sec-allowed li { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+  [data-theme="dark"] .sec-list.sec-allowed li { background: #052e16; color: #86efac; border-color: #14532d; }
+  .sec-divider { border: none; border-top: 1px solid var(--gray-200); margin: 14px 0; }
+  .sec-law-links { display: flex; flex-direction: column; gap: 6px; }
+  .sec-law-links a {
+    font-size: .84rem; color: var(--blue); text-decoration: none;
+    padding: 8px 12px; background: var(--blue-light); border-radius: 8px;
+    transition: background .2s; display: flex; align-items: center; gap: 8px;
+  }
+  .sec-law-links a:hover { background: #c7d9fd; }
+  [data-theme="dark"] .sec-law-links a { background: #1e3a5f; color: #93c5fd; }
+  [data-theme="dark"] .sec-law-links a:hover { background: #1e40af; }
+  .sec-warning-box {
+    background: var(--orange-light); border: 1px solid #fed7aa;
+    border-left: 4px solid var(--orange); border-radius: 8px;
+    padding: 14px 16px; font-size: .87rem; color: #92400e; line-height: 1.6;
+  }
+  [data-theme="dark"] .sec-warning-box { background: #431407; border-color: #ea580c; color: #fdba74; }
+  .sec-warning-box ul { margin: 8px 0 0 16px; padding: 0; }
+  .sec-footer {
+    border-top: 1px solid var(--gray-200);
+    padding: 18px 32px; flex-shrink: 0;
+    background: var(--gray-50); display: flex; flex-direction: column; gap: 14px;
+  }
+  [data-theme="dark"] .sec-footer { background: #111827; }
+  .sec-checkbox-label {
+    display: flex; gap: 12px; align-items: flex-start;
+    cursor: pointer; font-size: .87rem; color: var(--gray-700); line-height: 1.5;
+  }
+  .sec-checkbox-label input[type="checkbox"] {
+    width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;
+    accent-color: var(--blue); cursor: pointer;
+  }
+  .sec-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+  .sec-btn-leave {
+    background: none; border: 1.5px solid var(--gray-200); border-radius: 8px;
+    padding: 10px 20px; font-size: .9rem; color: var(--gray-700); cursor: pointer;
+    transition: all .2s; font-weight: 500;
+  }
+  .sec-btn-leave:hover { background: var(--gray-100); border-color: var(--gray-500); }
+  .sec-btn-confirm {
+    background: var(--blue); color: white; border: none; border-radius: 8px;
+    padding: 10px 24px; font-size: .9rem; font-weight: 700; cursor: pointer; transition: all .2s;
+  }
+  .sec-btn-confirm:hover:not(:disabled) { background: #1440b0; transform: translateY(-1px); }
+  .sec-btn-confirm:disabled { opacity: .42; cursor: not-allowed; transform: none; }
+  @media (max-width: 640px) {
+    .sec-header { padding: 18px 20px; }
+    .sec-body { padding: 16px 18px; }
+    .sec-footer { padding: 14px 18px; }
+    .sec-header h2 { font-size: .97rem; }
+    .sec-buttons { flex-direction: column; }
+    .sec-btn-leave, .sec-btn-confirm { width: 100%; text-align: center; justify-content: center; }
+  }
 </style>
 </head>
 <body>
+
+<!-- SECURITY MODAL -->
+<div id="securityOverlay" class="sec-overlay sec-hidden" role="dialog" aria-modal="true" aria-labelledby="secModalTitle">
+  <div class="sec-modal">
+
+    <div class="sec-header">
+      <div class="sec-header-top">
+        <span class="sec-lock-icon">🔒</span>
+        <h2 id="secModalTitle">Уведомление по информационной безопасности</h2>
+      </div>
+      <p class="sec-subtitle">Перед использованием сервисов искусственного интеллекта внимательно ознакомьтесь с требованиями информационной безопасности.</p>
+    </div>
+
+    <div class="sec-body">
+      <div class="sec-section">
+        <div class="sec-section-title">Запрещено передавать</div>
+        <ul class="sec-list sec-forbidden">
+          <li><span>❌</span><span>Персональные данные работников, клиентов и партнёров</span></li>
+          <li><span>❌</span><span>Коммерческую тайну</span></li>
+          <li><span>❌</span><span>Служебную информацию ограниченного распространения</span></li>
+          <li><span>❌</span><span>Государственные секреты</span></li>
+          <li><span>❌</span><span>Конфиденциальные документы организации</span></li>
+          <li><span>❌</span><span>Логины, пароли, API-ключи, токены доступа</span></li>
+          <li><span>❌</span><span>Финансовую информацию, договоры и внутреннюю документацию</span></li>
+          <li><span>❌</span><span>Конфигурации серверов, сетевого оборудования и средств защиты информации</span></li>
+          <li><span>❌</span><span>Любые сведения, распространение которых ограничено законодательством РК или внутренними нормативными документами организации</span></li>
+        </ul>
+      </div>
+
+      <div class="sec-section">
+        <div class="sec-section-title">Разрешается использовать</div>
+        <ul class="sec-list sec-allowed">
+          <li><span>✅</span><span>Обезличенные данные</span></li>
+          <li><span>✅</span><span>Учебные примеры</span></li>
+          <li><span>✅</span><span>Открытые данные</span></li>
+          <li><span>✅</span><span>Тестовую информацию</span></li>
+          <li><span>✅</span><span>Материалы, не содержащие конфиденциальных сведений</span></li>
+        </ul>
+      </div>
+
+      <hr class="sec-divider">
+
+      <div class="sec-section">
+        <div class="sec-section-title">📋 Нормативные документы Республики Казахстан</div>
+        <div class="sec-law-links">
+          <a href="https://adilet.zan.kz/rus/docs/Z1300000094" target="_blank" rel="noopener noreferrer">📄 Закон РК «О персональных данных и их защите»</a>
+          <a href="https://adilet.zan.kz/rus/docs/Z1500000418" target="_blank" rel="noopener noreferrer">📄 Закон РК «Об информатизации»</a>
+          <a href="https://adilet.zan.kz/rus/docs/Z990000349_" target="_blank" rel="noopener noreferrer">📄 Закон РК «О государственных секретах»</a>
+          <a href="https://adilet.zan.kz/rus/docs/K1500000375" target="_blank" rel="noopener noreferrer">📄 Предпринимательский кодекс РК (коммерческая тайна)</a>
+        </div>
+      </div>
+
+      <hr class="sec-divider">
+
+      <div class="sec-warning-box">
+        <strong>⚠️ Важно:</strong> Публичные сервисы искусственного интеллекта не являются корпоративными системами хранения информации. Перед отправкой информации в ИИ необходимо убедиться, что она не содержит:
+        <ul>
+          <li>персональных данных;</li>
+          <li>коммерческой тайны;</li>
+          <li>служебной информации;</li>
+          <li>государственных секретов;</li>
+          <li>конфиденциальных сведений организации.</li>
+        </ul>
+        <br>При наличии сомнений информация <strong>не должна</strong> передаваться в ИИ.
+      </div>
+    </div>
+
+    <div class="sec-footer">
+      <label class="sec-checkbox-label">
+        <input type="checkbox" id="secAgreeCheck" onchange="secToggleBtn()">
+        <span>Я ознакомился(ась) с требованиями информационной безопасности и обязуюсь соблюдать их при использовании сервисов искусственного интеллекта.</span>
+      </label>
+      <div class="sec-buttons">
+        <button class="sec-btn-leave" onclick="secLeave()">Покинуть сайт</button>
+        <button class="sec-btn-confirm" id="secConfirmBtn" disabled onclick="secConfirm()">✅ Ознакомлен(а)</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- /SECURITY MODAL -->
 
 <!-- NAV -->
 <nav>
@@ -1195,6 +1374,61 @@ function doSearch(q){
 document.addEventListener('click',e=>{
   if(!e.target.closest('nav')) document.getElementById('searchResults').style.display='none';
 });
+</script>
+
+<script>
+// ===== SECURITY MODAL =====
+(function(){
+  var STORAGE_KEY = 'sba_security_ack';
+  var EXPIRE_MS   = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+  function shouldShow(){
+    try {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if(!stored) return true;
+      var ts = parseInt(stored, 10);
+      if(isNaN(ts)) return true;
+      return (Date.now() - ts) >= EXPIRE_MS;
+    } catch(e){ return true; }
+  }
+
+  function preventEsc(e){ if(e.key==='Escape') e.preventDefault(); }
+
+  function secShow(){
+    var overlay = document.getElementById('securityOverlay');
+    if(!overlay) return;
+    overlay.classList.remove('sec-hidden');
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', preventEsc);
+  }
+
+  window.secToggleBtn = function(){
+    var check = document.getElementById('secAgreeCheck');
+    var btn   = document.getElementById('secConfirmBtn');
+    if(check && btn) btn.disabled = !check.checked;
+  };
+
+  window.secConfirm = function(){
+    try { localStorage.setItem(STORAGE_KEY, Date.now().toString()); } catch(e){}
+    var overlay = document.getElementById('securityOverlay');
+    if(overlay) overlay.classList.add('sec-hidden');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', preventEsc);
+  };
+
+  window.secLeave = function(){
+    window.close();
+    setTimeout(function(){ window.location.href = 'about:blank'; }, 300);
+  };
+
+  if(shouldShow()){
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', secShow);
+    } else {
+      secShow();
+    }
+  }
+})();
 </script>
 </body>
 </html>
