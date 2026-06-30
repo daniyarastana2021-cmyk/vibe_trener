@@ -1920,7 +1920,7 @@ document.addEventListener('click',e=>{
 </script>
 <!-- ===== VIBE CODING ASSISTANT ===== -->
 <style>
-:root{--va-w:420px;--va-h:580px}
+:root{--va-w:380px;--va-h:520px}
 .va-fab{position:fixed;bottom:28px;right:28px;z-index:9000;background:linear-gradient(135deg,#0078d4,#1a56db);color:#fff;border:none;border-radius:50px;padding:13px 22px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 20px rgba(0,120,212,.45);display:flex;align-items:center;gap:8px;transition:transform .2s,box-shadow .2s;font-family:inherit}
 .va-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(0,120,212,.55)}
 .va-fab-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:va-pulse 2s infinite}
@@ -1949,14 +1949,14 @@ document.addEventListener('click',e=>{
 .va-body::-webkit-scrollbar{width:4px}
 .va-body::-webkit-scrollbar-thumb{background:rgba(0,120,212,.3);border-radius:4px}
 .va-scenarios-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:4px 0}
-.va-card{background:rgba(255,255,255,.8);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:11px 10px;cursor:pointer;transition:all .18s;text-align:left;font-family:inherit;width:100%}
+.va-card{position:relative;background:rgba(255,255,255,.8);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:10px 10px 10px;cursor:pointer;transition:all .18s;text-align:left;font-family:inherit;width:100%;box-sizing:border-box}
 .va-card:hover{border-color:#0078d4;background:rgba(0,120,212,.05);transform:translateY(-1px);box-shadow:0 3px 12px rgba(0,120,212,.15)}
 [data-theme="dark"] .va-card{background:rgba(30,41,59,.7);border-color:rgba(255,255,255,.1)}
 [data-theme="dark"] .va-card:hover{border-color:#60a5fa;background:rgba(96,165,250,.08)}
 .va-card-icon{font-size:22px;line-height:1;margin-bottom:5px}
-.va-card-name{font-size:12px;font-weight:600;color:#1e293b;line-height:1.3}
+.va-card-name{font-size:12px;font-weight:600;color:#1e293b;line-height:1.3;word-break:break-word;padding-right:16px}
 [data-theme="dark"] .va-card-name{color:#e2e8f0}
-.va-card-fav{float:right;background:none;border:none;cursor:pointer;font-size:14px;padding:0;opacity:.5;transition:opacity .15s,transform .15s}
+.va-card-fav{position:absolute;top:7px;right:7px;background:none;border:none;cursor:pointer;font-size:13px;padding:2px;opacity:.5;transition:opacity .15s,transform .15s;line-height:1}
 .va-card-fav:hover,.va-card-fav.va-faved{opacity:1;transform:scale(1.2)}
 .va-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#94a3b8;padding:8px 4px 4px}
 .va-empty{text-align:center;padding:30px 20px;color:#94a3b8;font-size:13px}
@@ -2280,7 +2280,7 @@ function renderCards(list,q){
   return '<div class="va-scenarios-grid">'+fl.map(function(s){
     var fv=favs.indexOf(s.id)!==-1;
     return '<button class="va-card" onclick="vaSelectScenario(\''+s.id+'\')">'
-      +'<button class="va-card-fav'+(fv?' va-faved':'')+'" onclick="toggleFav(\''+s.id+'\',event)">'+(fv?'★':'☆')+'</button>'
+      +'<span class="va-card-fav'+(fv?' va-faved':'')+'" onclick="toggleFav(\''+s.id+'\',event)" role="button" tabindex="0">'+(fv?'★':'☆')+'</span>'
       +'<div class="va-card-icon">'+s.icon+'</div>'
       +'<div class="va-card-name">'+s.name+'</div>'
       +'</button>';
