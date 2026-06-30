@@ -572,7 +572,7 @@
 
   /* === BACK TO TOP === */
   #toTop {
-    position: fixed; bottom: 96px; right: 28px;
+    position: fixed; bottom: 28px; right: 190px;
     background: linear-gradient(135deg, var(--blue), var(--purple));
     color: white; border: none; border-radius: 50%;
     width: 46px; height: 46px; font-size: 1.1rem;
@@ -1878,7 +1878,7 @@
   <p style="margin-top:8px; opacity:.6">Сделано с ❤️ для сотрудников SBA · 2026</p>
 </footer>
 
-<button id="toTop" onclick="scrollTop()" title="Наверх">↑</button>
+<button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Наверх">↑</button>
 <div class="toast" id="toast">✅ Скопировано!</div>
 
 <script>
