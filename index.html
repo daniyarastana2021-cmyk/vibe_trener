@@ -2871,7 +2871,7 @@ renderBody();
     done=true;cancelAnimationFrame(aid);
 
     /* Прячем секции страницы (overlay ещё непрозрачен) */
-    var excl=new Set(['sba-ov','securityOverlay']);
+    var excl=new Set(['sba-ov','securityOverlay','vaFab','vaWindow','toTop']);
     var els=Array.from(document.body.children).filter(function(e){
       return !excl.has(e.id)&&e.tagName!=='SCRIPT'&&e.tagName!=='STYLE';
     });
