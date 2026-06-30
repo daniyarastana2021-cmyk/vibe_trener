@@ -2891,7 +2891,7 @@ renderBody();
 
     setTimeout(function(){
       ov.remove();st.remove();window.removeEventListener('resize',rsz);
-      els.forEach(function(e){e.style.transition='';});
+      els.forEach(function(e){e.style.transition='';e.style.opacity='';e.style.transform='';e.style.filter='';});
     },1150);
   }
 
