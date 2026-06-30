@@ -2719,7 +2719,6 @@ renderBody();
 <script>
 (function(){
   var KEY='sba_intro_v1';
-  try{if(localStorage.getItem(KEY))return;}catch(e){}
 
   /* ── Стили ── */
   var st=document.createElement('style');
@@ -2869,7 +2868,6 @@ renderBody();
 
   function finish(){
     done=true;cancelAnimationFrame(aid);
-    try{localStorage.setItem(KEY,'1');}catch(e){}
 
     /* Прячем секции страницы (overlay ещё непрозрачен) */
     var excl=new Set(['sba-ov','securityOverlay']);
@@ -2899,7 +2897,6 @@ renderBody();
 
   function skipNow(){
     done=true;cancelAnimationFrame(aid);
-    try{localStorage.setItem(KEY,'1');}catch(e){}
     ov.style.transition='opacity .3s ease';ov.style.opacity='0';
     setTimeout(function(){ov.remove();st.remove();window.removeEventListener('resize',rsz);},320);
   }
