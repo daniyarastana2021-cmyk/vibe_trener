@@ -2711,5 +2711,205 @@ function renderResponse(id){
 renderBody();
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════
+     CINEMATIC INTRO — КОСМИЧЕСКИЙ ПОЛЁТ
+     Показывается один раз, флаг в localStorage
+     ═══════════════════════════════════════════ -->
+<script>
+(function(){
+  var KEY='sba_intro_v1';
+  try{if(localStorage.getItem(KEY))return;}catch(e){}
+
+  /* ── Стили ── */
+  var st=document.createElement('style');
+  st.id='sba-st';
+  st.textContent=
+    '#sba-ov{position:fixed;inset:0;z-index:99999;background:#000010;overflow:hidden}'+
+    '#sba-cv{position:absolute;inset:0;width:100%;height:100%}'+
+    '#sba-skip{position:absolute;top:22px;right:22px;z-index:10;'+
+      'background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);'+
+      'border:1px solid rgba(255,255,255,.14);border-radius:24px;'+
+      'padding:7px 18px;font-size:13px;cursor:pointer;'+
+      'font-family:Inter,sans-serif;backdrop-filter:blur(12px);'+
+      'transition:all .2s;letter-spacing:.05em}'+
+    '#sba-skip:hover{background:rgba(255,255,255,.17);color:#fff}'+
+    '#sba-ctr{position:absolute;inset:0;display:flex;flex-direction:column;'+
+      'align-items:center;justify-content:center;pointer-events:none;'+
+      'opacity:0;transition:opacity .4s}'+
+    '#sba-logo{font-size:70px;margin-bottom:22px;'+
+      'filter:drop-shadow(0 0 0px #4F8CFF);'+
+      'opacity:0;transform:scale(.12) rotate(-220deg);'+
+      'transition:opacity .95s cubic-bezier(.34,1.56,.64,1),'+
+        'transform .95s cubic-bezier(.34,1.56,.64,1),filter .95s ease}'+
+    '#sba-logo.on{opacity:1;transform:scale(1) rotate(0deg);'+
+      'filter:drop-shadow(0 0 36px #4F8CFF) drop-shadow(0 0 72px rgba(124,92,255,.55))}'+
+    '#sba-ttl{font-family:Inter,sans-serif;font-size:clamp(28px,5.5vw,52px);font-weight:800;'+
+      'background:linear-gradient(135deg,#4F8CFF 0%,#7C5CFF 55%,#a78bfa 100%);'+
+      '-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;'+
+      'opacity:0;transform:translateY(24px);filter:blur(9px);margin-bottom:14px;'+
+      'transition:opacity .72s ease,transform .72s ease,filter .72s ease}'+
+    '#sba-ttl.on{opacity:1;transform:translateY(0);filter:blur(0)}'+
+    '#sba-sub{font-family:Inter,sans-serif;font-size:13px;'+
+      'color:rgba(200,213,240,.5);letter-spacing:.24em;text-transform:uppercase;'+
+      'opacity:0;transform:translateY(12px);'+
+      'transition:opacity .62s ease,transform .62s ease}'+
+    '#sba-sub.on{opacity:1;transform:translateY(0)}';
+  document.head.appendChild(st);
+
+  /* ── DOM ── */
+  var mob=window.innerWidth<768;
+  var ov=document.createElement('div');ov.id='sba-ov';
+  var cv=document.createElement('canvas');cv.id='sba-cv';
+  var skip=document.createElement('button');skip.id='sba-skip';skip.textContent='Skip Intro  ↗';
+  var ctr=document.createElement('div');ctr.id='sba-ctr';
+  var logo=document.createElement('div');logo.id='sba-logo';logo.textContent='✨';
+  var ttl=document.createElement('div');ttl.id='sba-ttl';ttl.textContent='Vibe Coding';
+  var sub=document.createElement('div');sub.id='sba-sub';sub.textContent='SBA · Samruk Business Academy';
+  ctr.append(logo,ttl,sub);
+  ov.append(cv,skip,ctr);
+  document.body.appendChild(ov);
+
+  /* ── Canvas ── */
+  var c=cv.getContext('2d'),W,H;
+  function rsz(){W=cv.width=ov.clientWidth;H=cv.height=ov.clientHeight;}
+  rsz();window.addEventListener('resize',rsz);
+
+  /* ── Звёзды ── */
+  var N=mob?110:260,S=[];
+  for(var i=0;i<N;i++)S.push({x:(Math.random()-.5)*2000,y:(Math.random()-.5)*2000,z:Math.random()*1000,pz:1000});
+
+  /* ── Туманности (desktop) ── */
+  var nX=[-220,290,-70],nY=[-130,115,260],nC=['79,140,255','124,92,255','34,197,94'];
+
+  /* ── Таймлайн (ms) ── */
+  var TFS=320,TFE=1900,TSE=2350,TLG=2480,TTL=2860,TSB=3140,TFN=3980;
+  var t0=null,aid=null,done=false,sL=false,sT=false,sS=false,sF=false;
+
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;}
+
+  function frame(ts){
+    if(!t0)t0=ts;
+    var el=ts-t0;
+
+    /* Фон */
+    c.fillStyle=el<TFS?'#000010':'rgba(0,0,14,.9)';
+    c.fillRect(0,0,W,H);
+
+    /* Скорость */
+    var spd=0;
+    if(el>=TFS&&el<TFE){
+      var ft=(el-TFS)/(TFE-TFS);
+      spd=ft<.55?lerp(1,30,ease(ft/.55)):lerp(30,7,ease((ft-.55)/.45));
+    }else if(el>=TFE&&el<TSE){
+      spd=lerp(7,0,ease((el-TFE)/(TSE-TFE)));
+    }
+
+    var cx=W/2,cy=H/2,PV=480;
+
+    /* Туманности */
+    if(!mob&&el>TFS&&el<TSE){
+      var na=clamp((el-TFS)/650,0,1)*.115;
+      for(var k=0;k<3;k++){
+        var nz=Math.max(90,580-el*.13);
+        var sc=PV/nz;
+        var nx=nX[k]*sc+cx,ny=nY[k]*sc+cy,nr=260*sc;
+        var gr=c.createRadialGradient(nx,ny,0,nx,ny,nr);
+        gr.addColorStop(0,'rgba('+nC[k]+','+na+')');
+        gr.addColorStop(1,'rgba('+nC[k]+',0)');
+        c.fillStyle=gr;c.fillRect(0,0,W,H);
+      }
+    }
+
+    /* Планета */
+    if(!mob&&el>650&&el<TSE){
+      var pa=clamp((el-650)/550,0,.68);
+      var pg=c.createRadialGradient(cx+170,cy-80,3,cx+170,cy-80,19);
+      pg.addColorStop(0,'rgba(110,150,215,'+pa+')');
+      pg.addColorStop(.6,'rgba(50,80,160,'+(pa*.7)+')');
+      pg.addColorStop(1,'rgba(20,40,100,'+(pa*.2)+')');
+      c.fillStyle=pg;c.beginPath();c.arc(cx+170,cy-80,19,0,6.28);c.fill();
+    }
+
+    /* Звёзды */
+    for(var j=0;j<S.length;j++){
+      var s=S[j];
+      s.pz=s.z;
+      s.z=Math.max(.1,s.z-spd);
+      if(s.z<1){s.x=(Math.random()-.5)*2000;s.y=(Math.random()-.5)*2000;s.z=1000;s.pz=1000;}
+      var sx=s.x/s.z*PV+cx,sy=s.y/s.z*PV+cy;
+      var px2=s.x/s.pz*PV+cx,py2=s.y/s.pz*PV+cy;
+      if(sx<-10||sx>W+10||sy<-10||sy>H+10)continue;
+      var br=clamp(1-s.z/1000,.05,1),sz2=br*2.8;
+      if(spd>2){
+        c.beginPath();c.moveTo(px2,py2);c.lineTo(sx,sy);
+        c.strokeStyle='rgba(180,212,255,'+(br*.82)+')';
+        c.lineWidth=Math.max(.25,sz2*.48);c.stroke();
+      }else{
+        var tw=.55+.45*Math.sin(ts*.0012+s.x*.007+s.y*.005);
+        c.beginPath();c.arc(sx,sy,Math.max(.28,sz2*tw*.62),0,6.28);
+        c.fillStyle='rgba(205,222,255,'+(br*tw)+')';c.fill();
+        if(br>.62){
+          c.beginPath();c.arc(sx,sy,sz2*2.1,0,6.28);
+          c.fillStyle='rgba(140,175,255,'+(br*.055)+')';c.fill();
+        }
+      }
+    }
+
+    /* Логотип → название → подпись */
+    if(el>=TLG&&!sL){sL=true;ctr.style.opacity='1';requestAnimationFrame(function(){logo.classList.add('on');});}
+    if(el>=TTL&&!sT){sT=true;ttl.classList.add('on');}
+    if(el>=TSB&&!sS){sS=true;sub.classList.add('on');}
+    if(el>=TFN&&!sF){sF=true;finish();}
+
+    if(!done)aid=requestAnimationFrame(frame);
+  }
+
+  function finish(){
+    done=true;cancelAnimationFrame(aid);
+    try{localStorage.setItem(KEY,'1');}catch(e){}
+
+    /* Прячем секции страницы (overlay ещё непрозрачен) */
+    var excl=new Set(['sba-ov','securityOverlay']);
+    var els=Array.from(document.body.children).filter(function(e){
+      return !excl.has(e.id)&&e.tagName!=='SCRIPT'&&e.tagName!=='STYLE';
+    });
+    els.forEach(function(e){
+      e.style.opacity='0';e.style.transform='translateY(18px)';e.style.filter='blur(5px)';
+    });
+
+    /* Fade overlay */
+    ov.style.transition='opacity .9s ease';ov.style.opacity='0';
+
+    /* Каскадное появление элементов */
+    els.forEach(function(e,i){
+      setTimeout(function(){
+        e.style.transition='opacity .65s ease,transform .65s ease,filter .65s ease';
+        e.style.opacity='1';e.style.transform='';e.style.filter='';
+      },80+i*85);
+    });
+
+    setTimeout(function(){
+      ov.remove();st.remove();window.removeEventListener('resize',rsz);
+      els.forEach(function(e){e.style.transition='';});
+    },1150);
+  }
+
+  function skipNow(){
+    done=true;cancelAnimationFrame(aid);
+    try{localStorage.setItem(KEY,'1');}catch(e){}
+    ov.style.transition='opacity .3s ease';ov.style.opacity='0';
+    setTimeout(function(){ov.remove();st.remove();window.removeEventListener('resize',rsz);},320);
+  }
+
+  skip.onclick=skipNow;
+  skip.onmouseenter=function(){this.style.background='rgba(255,255,255,.17)';this.style.color='#fff';};
+  skip.onmouseleave=function(){this.style.background='rgba(255,255,255,.07)';this.style.color='rgba(255,255,255,.55)';};
+
+  requestAnimationFrame(frame);
+})();
+</script>
 </body>
 </html>
